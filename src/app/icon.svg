@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="8" fill="#38251F"/>
+  <text x="15" y="21" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" fill="#F7F1E8">DL</text>
+  <path fill="#A84448" d="M25.2 7.4c-.55-.62-1.35-.4-1.7.1-.35-.5-1.15-.72-1.7-.1-.78.9-.55 2.05.2 2.75L23.5 11.6l1.5-1.45c.75-.7.98-1.85.2-2.75z"/>
+</svg>
