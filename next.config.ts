@@ -1,7 +1,4 @@
 import type { NextConfig } from "next";
-import { materializeAssets } from "./scripts/materialize-assets";
-
-materializeAssets();
 
 const nextConfig: NextConfig = {
   // The dev server is opened at 127.0.0.1 while Next's default allowed

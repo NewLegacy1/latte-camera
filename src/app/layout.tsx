@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Allura, Montserrat, Playfair_Display } from "next/font/google";
+import { Clarity } from "@/components/clarity";
 import { MetaBootstrap } from "@/components/meta-bootstrap";
 import { ShopifyAnalytics } from "@/components/shopify-analytics";
 import { WhopPixel } from "@/components/whop-pixel";
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <WhopPixel />
+        <Clarity />
       </head>
       <body>
         <a href="#shop" className="sr-only">

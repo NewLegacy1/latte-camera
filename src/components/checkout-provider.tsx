@@ -73,13 +73,6 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        await trackEvent({
-          eventName: "InitiateCheckout",
-          eventId: crypto.randomUUID(),
-          value,
-          contentIds,
-          numItems,
-        });
         window.location.assign(data.checkoutUrl);
       } catch {
         busy.current = false;

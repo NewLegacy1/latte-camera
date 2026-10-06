@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   const record = body as Record<string, unknown>;
   if (record.eventName === "Purchase") {
     return NextResponse.json(
-      { ok: false, error: "Purchase is recorded by Shopify, not this website." },
+      { ok: false, error: "Purchase is recorded by the Ownlane checkout, not this website." },
       { status: 400 },
     );
   }

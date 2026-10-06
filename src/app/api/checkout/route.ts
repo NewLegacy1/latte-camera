@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CheckoutError, createCheckout, parseCheckoutBody } from "@/lib/shopify";
+import { CheckoutError, createCheckout, parseCheckoutBody } from "@/lib/ownlane";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const checkout = await createCheckout(parseCheckoutBody(body));
+    const checkout = await createCheckout(parseCheckoutBody(body), request.headers);
     return NextResponse.json(checkout);
   } catch (error) {
     if (error instanceof CheckoutError) {
