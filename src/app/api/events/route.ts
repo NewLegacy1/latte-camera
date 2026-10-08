@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
-import { HANDLES } from "@/lib/offer";
+import { VARIANTS } from "@/lib/offer";
 import { isMetaEvent, sendCapi } from "@/lib/meta";
 
-const KNOWN_IDS = new Set<string>(Object.values(HANDLES));
+const KNOWN_IDS = new Set<string>([
+  ...Object.values(VARIANTS.colors),
+  VARIANTS.refillKitGift,
+  VARIANTS.frotherGift,
+  VARIANTS.frother,
+]);
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -29,19 +34,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 
-  const contentIds = Array.isArray(record.contentIds)
-    ? record.contentIds.filter((id): id is string => typeof id === "string" && KNOWN_IDS.has(id)).slice(0, 6)
+  const contents = Array.isArray(record.contents)
+    ? record.contents
+        .filter(
+          (item): item is { id: string; quantity: number } =>
+            !!item && typeof item === "object" && KNOWN_IDS.has((item as { id?: unknown }).id as string),
+        )
+        .slice(0, 6)
+        .map((item) => ({ id: item.id, quantity: Math.max(1, Math.min(9, Math.round(Number(item.quantity) || 1))) }))
     : undefined;
   const value =
     typeof record.value === "string" && /^\d+(\.\d{1,2})?$/.test(record.value) ? record.value : undefined;
-  const numItems =
-    typeof record.numItems === "number" && record.numItems > 0 && record.numItems < 10
-      ? Math.round(record.numItems)
-      : undefined;
   const eventSourceUrl =
     typeof record.eventSourceUrl === "string" ? record.eventSourceUrl.slice(0, 2000) : "";
   const fbp = typeof record.fbp === "string" ? record.fbp.slice(0, 200) : undefined;
-  const fbc = typeof record.fbc === "string" ? record.fbc.slice(0, 200) : undefined;
+  const fbc = typeof record.fbc === "string" ? record.fbc.slice(0, 600) : undefined;
+  const visitorId =
+    typeof record.visitorId === "string" && /^[A-Za-z0-9_-]{8,80}$/.test(record.visitorId) ? record.visitorId : undefined;
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
   const ip = forwarded || request.headers.get("x-real-ip") || undefined;
 
@@ -50,10 +59,10 @@ export async function POST(request: Request) {
     eventId: record.eventId,
     eventSourceUrl,
     value,
-    contentIds,
-    numItems,
+    contents,
     fbp,
     fbc,
+    visitorId,
     ip,
     userAgent: request.headers.get("user-agent") ?? undefined,
   });
