@@ -1,5 +1,7 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
+
 const META_EVENTS = ["PageView", "ViewContent", "AddToCart", "InitiateCheckout"] as const;
 export type MetaEventName = (typeof META_EVENTS)[number];
 
@@ -12,10 +14,10 @@ type CapiInput = {
   eventId: string;
   eventSourceUrl: string;
   value?: string;
-  contentIds?: string[];
-  numItems?: number;
+  contents?: { id: string; quantity: number }[];
   fbp?: string;
   fbc?: string;
+  visitorId?: string;
   ip?: string;
   userAgent?: string;
 };
@@ -29,16 +31,18 @@ export async function sendCapi(input: CapiInput) {
 
   const customData: Record<string, unknown> = { currency: "USD" };
   if (input.value) customData.value = Number(input.value);
-  if (input.contentIds?.length) {
-    customData.content_ids = input.contentIds;
+  if (input.contents?.length) {
+    customData.content_ids = input.contents.map((item) => item.id);
     customData.content_type = "product";
-    customData.contents = input.contentIds.map((id) => ({ id, quantity: 1 }));
+    customData.contents = input.contents;
+    customData.num_items = input.contents.reduce((sum, item) => sum + item.quantity, 0);
   }
-  if (input.numItems) customData.num_items = input.numItems;
 
   const userData: Record<string, string> = {};
   if (input.fbp) userData.fbp = input.fbp;
   if (input.fbc) userData.fbc = input.fbc;
+  // Ownlane hashes the same lowercased id, so storefront events and the purchase share one identity.
+  if (input.visitorId) userData.external_id = createHash("sha256").update(input.visitorId.toLowerCase()).digest("hex");
   if (input.ip) userData.client_ip_address = input.ip;
   if (input.userAgent) userData.client_user_agent = input.userAgent;
 

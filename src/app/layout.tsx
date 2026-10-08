@@ -50,8 +50,6 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  const shop = process.env.SHOPIFY_STORE_DOMAIN ?? "";
-
   return (
     <html
       lang="en"
@@ -66,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to the press
         </a>
         <MetaBootstrap />
-        <ShopifyAnalytics shop={shop} />
+        <ShopifyAnalytics />
         {children}
       </body>
     </html>

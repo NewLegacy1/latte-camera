@@ -1,16 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
+import { packProducts } from "@/lib/offer";
+import { startShopifyAnalytics } from "@/lib/shopify-analytics";
 
-export function ShopifyAnalytics({ shop }: { shop: string }) {
+/** Starts Shopify Analytics on every page. Product pages report the default pack (Buy 2, Black). */
+export function ShopifyAnalytics() {
   useEffect(() => {
-    const domain = shop.replace(/^https?:\/\//, "").replace(/\/$/, "");
-    if (!domain) return;
-    window.Shopify = window.Shopify || {};
-    window.Shopify.shop = domain;
-    window.Shopify.locale = "en";
-    window.Shopify.currency = { active: "USD", rate: "1.0" };
-  }, [shop]);
+    void startShopifyAnalytics(packProducts(2, "Black", false));
+  }, []);
 
   return null;
 }

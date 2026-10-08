@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { HANDLES, PRICE, dollars } from "@/lib/offer";
+import { PRICE, VARIANTS, dollars } from "@/lib/offer";
 import { trackEvent } from "@/lib/track-client";
 
 export function ViewContent() {
@@ -10,8 +10,7 @@ export function ViewContent() {
       eventName: "ViewContent",
       eventId: crypto.randomUUID(),
       value: dollars(PRICE.tier[2]),
-      contentIds: [HANDLES.press],
-      numItems: 1,
+      contents: [{ id: VARIANTS.colors.Black, quantity: 1 }],
     });
   }, []);
   return null;

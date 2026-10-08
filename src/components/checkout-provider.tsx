@@ -2,8 +2,9 @@
 
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 import { useOffer } from "@/components/offer-provider";
-import { HANDLES, dollars, type AddonId } from "@/lib/offer";
-import { attributionAttributes, trackEvent } from "@/lib/track-client";
+import { dollars, packLines, packProducts, type AddonId } from "@/lib/offer";
+import { shopifyTokens, trackShopifyCheckout } from "@/lib/shopify-analytics";
+import { checkoutUrl, landingAttribution, metaAttribution, trackEvent, visitorId } from "@/lib/track-client";
 
 type Status = "idle" | "loading" | "error";
 
@@ -38,34 +39,33 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
       if (paidFrother) addons.push("milk-frother-wand");
       if (messageCard) addons.push("custom-message-card");
 
-      const contentIds: string[] = [HANDLES.press];
-      if (tier === 2 || tier === 3) contentIds.push(HANDLES.refill);
-      if (tier === 3 || paidFrother) contentIds.push(HANDLES.frother);
-      if (messageCard) contentIds.push(HANDLES.messageCard);
-
+      const contents = packLines(tier, color, paidFrother).map((line) => ({ id: line.variantId, quantity: line.quantity }));
       const value = dollars(totalCents);
-      const numItems = contentIds.length;
-      const attributes = attributionAttributes();
-      const note = giftMessage.trim();
-      if (messageCard && note) {
-        attributes.push({ key: "gift_message", value: note.slice(0, 200) });
-      }
+      // Shared with Ownlane, so Meta counts the storefront's InitiateCheckout and Ownlane's as one.
+      const initiateEventId = `ic-${crypto.randomUUID()}`;
+      const shopify = await shopifyTokens();
 
       try {
-        await trackEvent({
-          eventName: "AddToCart",
-          eventId: crypto.randomUUID(),
-          value,
-          contentIds,
-          numItems,
-        });
-
         const response = await fetch("/api/checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tier, color, addons, attributes }),
+          body: JSON.stringify({
+            tier,
+            color,
+            addons,
+            visitorId: visitorId(),
+            attribution: {
+              ...metaAttribution(),
+              ...landingAttribution(),
+              metaInitiateEventId: initiateEventId,
+              shopifyUniqueToken: shopify.uniqueToken,
+              shopifyVisitToken: shopify.visitToken,
+              shopifyShopId: shopify.shopId,
+              shopifyStorefrontId: shopify.storefrontId,
+            },
+          }),
         });
-        const data = (await response.json()) as { checkoutUrl?: string; error?: string };
+        const data = (await response.json()) as { checkoutUrl?: string; cartId?: string | null; error?: string };
         if (!response.ok || !data.checkoutUrl?.startsWith("https://")) {
           busy.current = false;
           setStatus("error");
@@ -73,7 +73,10 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        window.location.assign(data.checkoutUrl);
+        void trackEvent({ eventName: "AddToCart", eventId: crypto.randomUUID(), value, contents });
+        void trackEvent({ eventName: "InitiateCheckout", eventId: initiateEventId, value, contents });
+        await trackShopifyCheckout(packProducts(tier, color, paidFrother), data.cartId ?? "");
+        window.location.assign(checkoutUrl(data.checkoutUrl));
       } catch {
         busy.current = false;
         setStatus("error");
