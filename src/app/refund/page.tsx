@@ -7,7 +7,7 @@ export default function RefundPage() {
   return (
     <PolicyShell title="Refunds" lede="Thirty days to decide the morning was a miss.">
       <p>
-        30-day money-back guarantee. If the press is not their thing, write to us within 30 days of delivery and we will refund the order. The window starts the day it arrives. Ships in 2-3 days.
+        30-day money-back guarantee. If the press is not their thing, write to us within 30 days of delivery and we will refund the order. The window starts the day it arrives. Ships in 2-5 business days.
       </p>
       <h2>The warranty</h2>
       <p>

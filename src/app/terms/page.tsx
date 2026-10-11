@@ -18,7 +18,7 @@ export default function TermsPage() {
       </p>
       <h2>Checkout</h2>
       <p>
-        The buy button opens secure checkout by Stripe. The purchase contract, tax, and payment are completed there. Ships in 2-3 days. The 30-day money-back guarantee and 1-year warranty are described on the refund page.
+        The buy button opens secure checkout by Stripe. The purchase contract, tax, and payment are completed there. Ships in 2-5 business days. The 30-day money-back guarantee and 1-year warranty are described on the refund page.
       </p>
       <p>Use the press on foam. Cocoa and cinnamon are food dusts. Keep them dry, and keep the press away from a sink full of water.</p>
     </PolicyShell>

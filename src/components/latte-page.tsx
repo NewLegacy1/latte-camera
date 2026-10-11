@@ -474,7 +474,7 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
 
               <p className="eta">
                 <span className="dot" aria-hidden="true" />
-                Order today · Ships in 2-3 days
+                Order today · Ships in 2-5 business days
               </p>
               <button ref={ctaRef} className="btn cart-cta" type="button" id="buy-now" onClick={checkout.buy} disabled={checkout.status === "loading"}>
                 <span>{checkout.status === "loading" ? "Opening…" : "Buy now"}</span>
@@ -513,7 +513,7 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
                 <details>
                   <summary><span>Shipping</span></summary>
                   <div className="body">
-                    <p>Free shipping on every order. Ships in 2-3 days. <Link href="/shipping">Shipping policy</Link></p>
+                    <p>Free shipping on every order. Ships in 2-5 business days. <Link href="/shipping">Shipping policy</Link></p>
                   </div>
                 </details>
               </div>
@@ -617,7 +617,7 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
               </details>
               <details>
                 <summary><span>How long does shipping take?</span></summary>
-                <div className="body"><p>Free on every order. Ships in 2-3 days.</p></div>
+                <div className="body"><p>Free on every order. Ships in 2-5 business days.</p></div>
               </details>
             </div>
           </div>

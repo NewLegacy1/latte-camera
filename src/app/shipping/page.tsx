@@ -11,7 +11,7 @@ export default function ShippingPage() {
     >
       <p>Free shipping on every tier. Buy 1, Buy 2, and Buy 3 all ship free. There is no paid rush tier on this site.</p>
       <h2>When it ships</h2>
-      <p>Ships in 2-3 days after checkout is paid.</p>
+      <p>Ships in 2-5 business days after checkout is paid.</p>
     </PolicyShell>
   );
 }

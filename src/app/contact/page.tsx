@@ -17,7 +17,7 @@ export default function ContactPage() {
           Use the email on your Shopify order confirmation. That note is the thread we can match to a parcel. This preview does not publish a placeholder inbox.
         </p>
       )}
-      <p>For shipping times, start with the shipping page: ships in 2-3 days, free on every order.</p>
+      <p>For shipping times, start with the shipping page: ships in 2-5 business days, free on every order.</p>
       <p>For a return, the 30-day money-back guarantee is on the refund page, along with the 1-year warranty on the press.</p>
     </PolicyShell>
   );
