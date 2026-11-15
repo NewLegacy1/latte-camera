@@ -64,19 +64,18 @@ export const PRICE = {
 } as const;
 
 /**
- * What the pack is worth on the card before the deal.
- * Buy 1 uses the catalog compare-at. Buy 2 / Buy 3 use buying that many
- * presses at the single price, plus the free frother's real price on Buy 3.
- * Do not invent a dollar value for the refill kit.
+ * What the pack is worth before the deal, for the price row.
+ * Buy 1 uses the catalog compare-at. Buy 2 / Buy 3 compare to buying
+ * that many presses at the $60 single price. Gift value is shown separately.
  */
-export function packValueCents(tier: Tier) {
+export function packCompareCents(tier: Tier) {
   switch (tier) {
     case 1:
       return PRICE.compareTier1;
     case 2:
       return PRICE.tier[1] * 2;
     case 3:
-      return PRICE.tier[1] * 3 + PRICE.frother;
+      return PRICE.tier[1] * 3;
     default: {
       const exhaustive: never = tier;
       return exhaustive;
@@ -84,9 +83,14 @@ export function packValueCents(tier: Tier) {
   }
 }
 
-/** Dollars the shopper keeps vs buying the presses (and Buy 3 frother) separately. */
+/** Dollars saved vs singles (or the Buy 1 compare-at). Does not invent a refill dollar value. */
 export function packSaveCents(tier: Tier) {
-  return packValueCents(tier) - PRICE.tier[tier];
+  return packCompareCents(tier) - PRICE.tier[tier];
+}
+
+/** @deprecated Prefer packCompareCents — kept so older imports keep building. */
+export function packValueCents(tier: Tier) {
+  return packCompareCents(tier);
 }
 
 export const SWATCH: Record<PressColor, string> = {
