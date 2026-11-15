@@ -18,8 +18,8 @@ export class CheckoutError extends Error {
  * gifts are dedicated $0.00 variants. Env vars override the IDs.
  */
 const DEFAULTS = {
-  shop: "edr0qi-9t.myshopify.com",
-  checkoutHost: "https://checkout.dearlatte.shop",
+  shop: "mnhkb0-af.myshopify.com",
+  checkoutHost: "https://checkout-platform-two-pay.vercel.app",
 };
 
 const DISCOUNT_CODES: Record<Tier, string | null> = { 1: null, 2: "BUNDLE2", 3: "BUNDLE3" };
@@ -197,7 +197,7 @@ export async function createCheckout(request: CheckoutRequest, headers: Headers)
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         shop: shopDomain(),
-        lines,
+        lines: lines.map((line) => ({ variantId: line.variantId, quantity: line.quantity, sellingPlanId: null })),
         discountCode: DISCOUNT_CODES[request.tier],
         visitorId: request.visitorId,
         attribution,
