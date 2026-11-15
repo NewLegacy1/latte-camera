@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const shop = (process.env.SHOPIFY_STORE_DOMAIN || "edr0qi-9t.myshopify.com").replace(/^https?:\/\//, "").replace(/\/$/, "");
+const shop = (process.env.SHOPIFY_STORE_DOMAIN || "mnhkb0-af.myshopify.com").replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
   // The dev server is opened at 127.0.0.1 while Next's default allowed
