@@ -7,15 +7,53 @@ export type Tier = (typeof tiers)[number];
 export const addonIds = ["milk-frother-wand", "custom-message-card"] as const;
 export type AddonId = (typeof addonIds)[number];
 
-export const HANDLES = {
-  press: "dear-latte-stencil-press",
-  refill: "cocoa-cinnamon-refill-kit",
-  frother: "milk-frother-wand",
-  messageCard: "custom-message-card",
-} as const;
+/**
+ * Shopify variant IDs on mnhkb0-af.myshopify.com. Checkout sends these lines
+ * to Ownlane, and Meta events use them as content IDs so browsing events match
+ * Ownlane's Purchase. Server env vars can override them (src/lib/ownlane.ts).
+ */
+export const VARIANTS = {
+  colors: { Black: "51151364030683", White: "51151364063451", Green: "51151364096219" } as Record<PressColor, string>,
+  refillKitGift: "51151364128987",
+  frotherGift: "51151419637979",
+  frother: "51151419670747",
+};
+export type VariantIds = typeof VARIANTS;
 
-/** Shop currency. Dear Latte charges Canadian dollars. */
-export const CURRENCY = "CAD" as const;
+/** The Shopify lines for a pack: Buy 2 adds the refill kit, Buy 3 adds the refill kit and frother. */
+export function packLines(tier: Tier, color: PressColor, paidFrother: boolean, ids: VariantIds = VARIANTS) {
+  const lines = [{ variantId: ids.colors[color], quantity: tier as number }];
+  if (tier === 2 || tier === 3) lines.push({ variantId: ids.refillKitGift, quantity: 1 });
+  if (tier === 3) lines.push({ variantId: ids.frotherGift, quantity: 1 });
+  else if (paidFrother) lines.push({ variantId: ids.frother, quantity: 1 });
+  return lines;
+}
+
+const PRODUCTS: Record<string, { productId: string; name: string }> = {
+  [VARIANTS.colors.Black]: { productId: "10421781430491", name: "The Latte Camera" },
+  [VARIANTS.colors.White]: { productId: "10421781430491", name: "The Latte Camera" },
+  [VARIANTS.colors.Green]: { productId: "10421781430491", name: "The Latte Camera" },
+  [VARIANTS.refillKitGift]: { productId: "10421781725403", name: "Cocoa & Cinnamon Refill Kit (Free Gift)" },
+  [VARIANTS.frotherGift]: { productId: "10421781922011", name: "Milk Frother Wand (Free Gift)" },
+  [VARIANTS.frother]: { productId: "10421781922011", name: "Milk Frother Wand" },
+};
+
+/** The pack as Shopify Analytics products: the pack price spread over the presses, gifts at $0. */
+export function packProducts(tier: Tier, color: PressColor, paidFrother: boolean) {
+  return packLines(tier, color, paidFrother).map((line) => {
+    const product = PRODUCTS[line.variantId];
+    const unitCents =
+      line.variantId === VARIANTS.colors[color] ? PRICE.tier[tier] / tier : line.variantId === VARIANTS.frother ? PRICE.frother : 0;
+    return {
+      productGid: `gid://shopify/Product/${product.productId}`,
+      variantGid: `gid://shopify/ProductVariant/${line.variantId}`,
+      name: product.name,
+      variantName: line.variantId === VARIANTS.colors[color] ? color : "",
+      price: (unitCents / 100).toFixed(2),
+      quantity: line.quantity,
+    };
+  });
+}
 
 /** Locked prices in cents. Do not add other discounts. */
 export const PRICE = {
@@ -44,9 +82,9 @@ export function isAddon(value: unknown): value is AddonId {
 }
 
 export function money(cents: number) {
-  return new Intl.NumberFormat("en-CA", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: CURRENCY,
+    currency: "USD",
     minimumFractionDigits: 2,
   }).format(cents / 100);
 }
