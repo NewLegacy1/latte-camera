@@ -1,0 +1,186 @@
+.store .packs { display: grid; gap: 12px; padding-top: 10px; }
+.store .pack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r);
+  background: var(--white);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+.store .pack.on { border-color: var(--green); background: var(--sage-bg); box-shadow: 0 0 0 1px var(--green); }
+.store .pack.has-badge { margin-top: 6px; }
+.store .pack .badge {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  transform: translateY(-50%);
+  background: var(--apricot);
+  color: var(--ivory);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 20px;
+  line-height: 1.2;
+  max-width: calc(100% - 28px);
+  z-index: 1;
+}
+.store .pack .badge.dark { background: var(--green); }
+.store .pack-main { display: flex; align-items: center; gap: 10px; width: 100%; }
+.store .pack-art {
+  position: relative;
+  width: 72px;
+  height: 54px;
+  flex: none;
+}
+.store .pack-art img,
+.store .pack-art svg {
+  position: absolute;
+  bottom: 0;
+  width: 46px;
+  height: auto;
+  object-fit: contain;
+}
+.store .pack-art.n1 img,
+.store .pack-art.n1 svg { left: 12px; width: 50px; }
+.store .pack-art.n2 img:nth-child(1),
+.store .pack-art.n2 svg:nth-child(1) { left: 0; width: 40px; }
+.store .pack-art.n2 img:nth-child(2),
+.store .pack-art.n2 svg:nth-child(2) { left: 26px; width: 46px; }
+.store .pack-art.n3 img:nth-child(1) { left: 0; width: 32px; }
+.store .pack-art.n3 img:nth-child(2) { left: 18px; width: 36px; }
+.store .pack-art.n3 img:nth-child(3) { left: 36px; width: 36px; }
+.store .pack .nm { flex: 1; min-width: 0; }
+.store .pack .nm strong { display: block; font-size: 16px; font-weight: 800; color: var(--green); line-height: 1.25; }
+.store .pack .each { display: block; margin-top: 3px; font-size: 12.5px; font-weight: 700; color: var(--soft); }
+.store .pack .support { display: block; margin-top: 3px; font-size: 12px; font-weight: 700; color: var(--apricot-ink); line-height: 1.35; }
+.store .pack .pr { text-align: right; flex: none; }
+.store .pack .pr b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.store .pack .pr s { display: block; margin-top: 2px; font-size: 12.5px; color: var(--soft); }
+.store .pack .pr .save {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  font-weight: 800;
+  font-style: normal;
+  color: var(--apricot);
+  letter-spacing: 0.01em;
+}
+.store .pack-extra {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(56, 37, 31, 0.12);
+}
+.store .bonus { display: flex; align-items: flex-start; gap: 8px; }
+.store .bonus svg { width: 18px; height: 18px; color: var(--apricot); flex: none; margin-top: 1px; }
+.store .bonus b { display: block; font-size: 13.5px; font-weight: 800; color: var(--green); line-height: 1.3; }
+.store .bonus small { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 700; color: var(--ink); }
+
+.store .color-note {
+  margin: -4px 0 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--soft);
+}
+.store .pitch.soft { margin-top: -4px; color: var(--soft); font-weight: 700; }
+.store .cards-pill {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(168, 68, 72, 0.1), rgba(232, 201, 193, 0.35));
+  border: 1px solid rgba(168, 68, 72, 0.18);
+  color: var(--green);
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.store .cards-pill svg { width: 20px; height: 20px; color: var(--apricot); flex: none; margin-top: 1px; }
+.store .cards-pill b { font-weight: 800; color: var(--apricot-ink); }
+.store .pack .pack-cards {
+  display: block;
+  margin-top: 4px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--apricot);
+  letter-spacing: 0.01em;
+}
+.store .pack-includes {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(56, 37, 31, 0.1);
+}
+.store .pack-includes svg { width: 18px; height: 18px; color: var(--apricot); flex: none; margin-top: 1px; }
+.store .pack-includes b { display: block; font-size: 13px; font-weight: 800; color: var(--green); }
+.store .pack-includes small { display: block; margin-top: 2px; font-size: 12px; font-weight: 700; color: var(--soft); }
+.store .xmas-note {
+  margin: 0 0 10px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--apricot-ink);
+}
+.store .box-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+  text-align: center;
+}
+.store .box-check svg { width: 16px; height: 16px; color: var(--apricot); flex: none; }
+.store .buy-quote {
+  margin: 16px 0 0;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(165deg, rgba(255,255,255,0.95), rgba(247,241,232,0.9));
+  border: 1px solid rgba(56, 37, 31, 0.1);
+  box-shadow: 0 12px 30px rgba(56, 37, 31, 0.06);
+  text-align: center;
+}
+.store .buy-quote .stars,
+.store .review .stars {
+  color: var(--apricot);
+  letter-spacing: 0.08em;
+  font-size: 14px;
+  line-height: 1;
+}
+.store .buy-quote blockquote {
+  margin: 8px 0 0;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--green);
+}
+.store .buy-quote figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--soft);
+  letter-spacing: 0.02em;
+}
+.store .reviews {
+  display: grid;
+  gap: 14px;
+}
