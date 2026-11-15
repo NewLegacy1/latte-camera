@@ -2,7 +2,7 @@ import { CheckoutProvider } from "@/components/checkout-provider";
 import { LattePage } from "@/components/latte-page";
 import { OfferProvider } from "@/components/offer-provider";
 import { ViewContent } from "@/components/view-content";
-import { PRICE, dollars } from "@/lib/offer";
+import { CURRENCY, PRICE, dollars } from "@/lib/offer";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:43123";
 
@@ -27,7 +27,7 @@ const productJsonLd = {
     "@type": "Offer",
     name: offer.name,
     price: offer.price,
-    priceCurrency: "USD",
+    priceCurrency: CURRENCY,
     availability: "https://schema.org/InStock",
     url: siteUrl,
   })),
