@@ -63,6 +63,32 @@ export const PRICE = {
   messageCard: 1995,
 } as const;
 
+/**
+ * What the pack is worth on the card before the deal.
+ * Buy 1 uses the catalog compare-at. Buy 2 / Buy 3 use buying that many
+ * presses at the single price, plus the free frother's real price on Buy 3.
+ * Do not invent a dollar value for the refill kit.
+ */
+export function packValueCents(tier: Tier) {
+  switch (tier) {
+    case 1:
+      return PRICE.compareTier1;
+    case 2:
+      return PRICE.tier[1] * 2;
+    case 3:
+      return PRICE.tier[1] * 3 + PRICE.frother;
+    default: {
+      const exhaustive: never = tier;
+      return exhaustive;
+    }
+  }
+}
+
+/** Dollars the shopper keeps vs buying the presses (and Buy 3 frother) separately. */
+export function packSaveCents(tier: Tier) {
+  return packValueCents(tier) - PRICE.tier[tier];
+}
+
 export const SWATCH: Record<PressColor, string> = {
   Black: "#241816",
   White: "#F4F0EA",
