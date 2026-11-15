@@ -1,1 +1,4 @@
-@file:///tmp/c1
+/* Dear Latte storefront */
+@import "./storefront-base.css";
+@import "./storefront-layout.css";
+@import "./storefront-extras.css";
