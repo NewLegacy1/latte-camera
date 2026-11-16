@@ -75,7 +75,6 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
       }
     : current;
   const showColor = (name: PressColor) => {
-    offer.setColor(name);
     setColorShot(name);
   };
 
