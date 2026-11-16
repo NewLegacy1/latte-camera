@@ -1,5 +1,22 @@
 [
   {
+    "rel": "public/images/gift-refill.jpg",
+    "b64": "public__images__gift-refill.jpg.part00.b64",
+    "size": 68156,
+    "parts": [
+      "public__images__gift-refill.jpg.part00.b64",
+      "public__images__gift-refill.jpg.part01.b64"
+    ]
+  },
+  {
+    "rel": "public/images/gift-frother.jpg",
+    "b64": "public__images__gift-frother.jpg.part00.b64",
+    "size": 18946,
+    "parts": [
+      "public__images__gift-frother.jpg.part00.b64"
+    ]
+  },
+  {
     "rel": "public/images/logos/amazon.png",
     "b64": "public__images__logos__amazon.png.b64",
     "size": 1688,
