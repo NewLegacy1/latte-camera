@@ -93,6 +93,72 @@
   font-weight: 700;
   color: var(--soft);
 }
+.store .trust-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--soft);
+}
+.store .trust-eyebrow .trust-stars {
+  color: #C9832B;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  line-height: 1;
+}
+.store .info h1 .tm {
+  font-size: 0.55em;
+  font-weight: 700;
+  vertical-align: super;
+  margin-left: 1px;
+  letter-spacing: 0;
+}
+.store .pack-colors {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(56, 37, 31, 0.1);
+}
+.store .pack-color-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--soft);
+}
+.store .pack-color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.store .pack-color-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid rgba(56, 37, 31, 0.12);
+  background: #fff;
+  flex: none;
+}
+.store .pack-color-row select {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 36px 0 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2338251F' d='M1.1 1.2 6 6.1l4.9-4.9 1.1 1.1L6 8.3.0 2.3z'/%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: 12px 8px;
+  color: var(--ink);
+  font: 700 14px/1.2 var(--ui);
+  appearance: none;
+  cursor: pointer;
+}
+.store .pack-color-row select:focus {
+  outline: 2px solid var(--green);
+  outline-offset: 1px;
+}
 .store .pitch.soft { margin-top: -4px; color: var(--soft); font-weight: 700; }
 .store .cards-pill {
   display: flex;
