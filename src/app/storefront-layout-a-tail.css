@@ -175,8 +175,7 @@
 .store .brand-logo {
   height: 18px;
   width: auto;
-  opacity: 0.72;
-  filter: grayscale(1);
+  opacity: 0.78;
   flex: none;
 }
 @media (max-width: 767px) {
