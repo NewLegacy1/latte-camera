@@ -102,7 +102,7 @@ export function LatteStory() {
             <div className="sec-head">
               <div className="eyebrow">Shipping & Returns</div>
               <h2>Free shipping. Easy returns.</h2>
-              <p>Ships in 1–2 business days. 30-day money-back guarantee on every order.</p>
+              <p>Dispatches in 2–5 business days. 30-day money-back guarantee on every order.</p>
             </div>
           </div>
         </section>
