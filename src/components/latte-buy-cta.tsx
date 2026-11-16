@@ -13,10 +13,10 @@ export function LatteBuyCta({ ctaRef }: { ctaRef: RefObject<HTMLButtonElement | 
   const checkout = useCheckout();
 
   return (
-    <>
+    <div className="buy-cta-block">
       <p className="eta">
         <span className="dot" aria-hidden="true" />
-        Ships in 1–2 business days
+        Dispatches in 2–5 business days
       </p>
       <button
         ref={ctaRef}
@@ -28,13 +28,11 @@ export function LatteBuyCta({ ctaRef }: { ctaRef: RefObject<HTMLButtonElement | 
       >
         <span>{checkout.status === "loading" ? "Opening…" : `Buy now — ${money(offer.totalCents)}`}</span>
       </button>
-      <p className="box-check">
-        <span>{packSummary(offer.tier)}</span>
-      </p>
+      <p className="order-summary">{packSummary(offer.tier)}</p>
+      <p className="ship-note">Free shipping · 30-day money-back guarantee</p>
       <div className="payments slim">
         <PayMarks />
       </div>
-      <p className="ship-note">Free shipping · 30-day money-back guarantee</p>
 
       <div className="acc">
         <details>
@@ -62,12 +60,12 @@ export function LatteBuyCta({ ctaRef }: { ctaRef: RefObject<HTMLButtonElement | 
           </summary>
           <div className="body">
             <p>
-              Free shipping on every order. Ships in 1–2 business days. 30-day money-back guarantee.{" "}
+              Free shipping on every order. Dispatches in 2–5 business days. 30-day money-back guarantee.{" "}
               <Link href="/shipping">Shipping details</Link> · <Link href="/refund">Returns</Link>.
             </p>
           </div>
         </details>
       </div>
-    </>
+    </div>
   );
 }
