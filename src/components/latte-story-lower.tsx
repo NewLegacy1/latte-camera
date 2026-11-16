@@ -27,7 +27,7 @@ export function LatteStoryLower() {
             <div className="guarantee quiet">
               <h2>Make room for a little morning joy.</h2>
               <p>
-                Your order comes with a 30-day money-back guarantee, free shipping, and a one-year warranty on the press.{" "}
+                Your order comes with 30 Day Money Back, free shipping, and a one-year warranty on the press.{" "}
                 <Link href="/refund">Read the return terms</Link>.
               </p>
               <a className="btn inline light" href="#shop">Choose your Latte Camera</a>
@@ -80,7 +80,7 @@ export function LatteStoryLower() {
               </details>
               <details>
                 <summary><span>How long does shipping take?</span></summary>
-                <div className="body"><p>Free on every order. Dispatches in 2–5 business days. <Link href="/shipping">Shipping information</Link> has delivery estimates.</p></div>
+                <div className="body"><p>Free on every order. Ships in 1–2 business days. 30 Day Money Back. <Link href="/shipping">Shipping information</Link> has delivery estimates.</p></div>
               </details>
             </div>
           </div>
