@@ -73,37 +73,74 @@ export function LatteBuyPanel({
           const selected = offer.tier === pack.tier;
           const each = Math.round(PRICE.tier[pack.tier] / pack.tier);
           return (
-            <button
-              key={pack.tier}
-              type="button"
-              role="radio"
-              aria-checked={selected}
-              className={`pack compact${selected ? " on" : ""}${pack.badge ? " has-badge" : ""}`}
-              onClick={() => offer.setTier(pack.tier)}
-            >
-              {pack.badge ? <span className="badge">{pack.badge}</span> : null}
-              {/* eslint-disable-next-line @next/next/no-img-element -- compact pack thumb */}
-              <img
-                className="pack-thumb"
-                src={`/images/press-${offer.color.toLowerCase()}.png`}
-                alt=""
-                width={48}
-                height={48}
-              />
-              <span className="nm">
-                <strong>{pack.name}</strong>
-                <span className="each">{pack.line}</span>
-                {pack.tier > 1 ? (
-                  <span className="support">
-                    {money(each)} each · Save {money(packSaveCents(pack.tier))}
-                  </span>
-                ) : null}
-                {pack.include ? <span className="pack-include">{pack.include}</span> : null}
-              </span>
-              <span className="pr">
-                <b>{money(PRICE.tier[pack.tier])}</b>
-              </span>
-            </button>
+            <div key={pack.tier} className={`pack-option${selected ? " on" : ""}`}>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                className={`pack compact${selected ? " on" : ""}${pack.badge ? " has-badge" : ""}`}
+                onClick={() => offer.setTier(pack.tier)}
+              >
+                {pack.badge ? <span className="badge">{pack.badge}</span> : null}
+                {/* eslint-disable-next-line @next/next/no-img-element -- compact pack thumb */}
+                <img
+                  className="pack-thumb"
+                  src={`/images/press-${offer.color.toLowerCase()}.png`}
+                  alt=""
+                  width={48}
+                  height={48}
+                />
+                <span className="nm">
+                  <strong>{pack.name}</strong>
+                  <span className="each">{pack.line}</span>
+                  {pack.tier > 1 ? (
+                    <span className="support">
+                      {money(each)} each · Save {money(packSaveCents(pack.tier))}
+                    </span>
+                  ) : null}
+                  {pack.include ? <span className="pack-include">{pack.include}</span> : null}
+                </span>
+                <span className="pr">
+                  <b>{money(PRICE.tier[pack.tier])}</b>
+                </span>
+              </button>
+
+              {selected && pack.tier > 1 ? (
+                <div className="pack-colors" aria-label={`Color for each camera in ${pack.name}`}>
+                  <div className="pack-color-label">Color</div>
+                  {offer.unitColors.map((unitColor, index) => (
+                    <div className="pack-color-row" key={`unit-${pack.tier}-${index}`}>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- per-unit color preview */}
+                      <img
+                        className="pack-color-thumb"
+                        src={`/images/press-${unitColor.toLowerCase()}.png`}
+                        alt=""
+                        width={44}
+                        height={44}
+                      />
+                      <label className="sr-only" htmlFor={`unit-color-${pack.tier}-${index}`}>
+                        Camera {index + 1} color
+                      </label>
+                      <select
+                        id={`unit-color-${pack.tier}-${index}`}
+                        value={unitColor}
+                        onChange={(event) => {
+                          const next = event.target.value as PressColor;
+                          offer.setUnitColor(index, next);
+                          onShowColor(next);
+                        }}
+                      >
+                        {colors.map((name) => (
+                          <option key={name} value={name}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           );
         })}
       </div>
