@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Mark } from "@/components/latte-marks";
 
 export function LatteStoryLower() {
   return (
