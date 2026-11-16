@@ -4,7 +4,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
+  gap: 8px 10px;
 }
 .store .benefit-grid li {
   margin: 0;
@@ -13,11 +13,11 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.65);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--green);
-  line-height: 1.3;
+  line-height: 1.35;
 }
-.store .packs { display: grid; gap: 10px; padding-top: 8px; }
+.store .packs { display: grid; gap: 10px; padding-top: 0; }
 .store .pack {
   position: relative;
   display: flex;
@@ -40,6 +40,7 @@
   gap: 12px;
   padding: 12px 12px 12px 10px;
   border-width: 2px;
+  border-color: var(--line);
 }
 .store .pack.compact .pack-thumb {
   width: 48px;
@@ -47,10 +48,11 @@
   object-fit: contain;
   flex: none;
   border-radius: 10px;
-  background: #fff;
+  background: #f4efe8;
 }
 .store .pack.compact .nm { flex: 1; min-width: 0; }
 .store .pack.compact .nm strong {
+  display: block;
   font-size: 14.5px;
   font-weight: 800;
   color: var(--green);
@@ -60,28 +62,42 @@
   display: block;
   margin-top: 2px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--soft);
+  line-height: 1.35;
 }
 .store .pack.compact .support {
   display: block;
-  margin-top: 2px;
+  margin-top: 3px;
   font-size: 12px;
   font-weight: 700;
   color: var(--apricot-ink);
+  line-height: 1.35;
 }
 .store .pack.compact .pack-include {
   display: block;
   margin-top: 4px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--green);
+  line-height: 1.35;
+}
+.store .pack.compact .pr {
+  text-align: right;
+  flex: none;
+  align-self: flex-start;
+  padding-top: 2px;
 }
 .store .pack.compact .pr b {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
   color: var(--green);
+  letter-spacing: -0.02em;
 }
 .store .pack.on { border-color: var(--green); background: #f6ebe6; box-shadow: none; }
-.store .pack.compact.on { border-color: var(--green); background: #f6ebe6; }
-.store .pack.has-badge { margin-top: 6px; }
+.store .pack.compact.on {
+  border-width: 2px;
+  border-color: var(--green);
+  background: #f6ebe6;
+}
+.store .pack.has-badge { margin-top: 8px; }
