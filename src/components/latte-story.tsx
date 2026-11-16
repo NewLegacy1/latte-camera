@@ -100,9 +100,9 @@ export function LatteStory() {
         <section className="sec tint" id="shipping">
           <div className="wrap">
             <div className="sec-head">
-              <div className="eyebrow">Shipping & Returns</div>
+              <div className="eyebrow">Shipping &amp; Returns</div>
               <h2>Free shipping. Easy returns.</h2>
-              <p>Dispatches in 2–5 business days. 30-day money-back guarantee on every order.</p>
+              <p>Ships in 1–2 business days. 30 Day Money Back.</p>
             </div>
           </div>
         </section>
