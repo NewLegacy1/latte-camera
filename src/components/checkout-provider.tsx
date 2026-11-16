@@ -17,7 +17,7 @@ type CheckoutValue = {
 const CheckoutContext = createContext<CheckoutValue | null>(null);
 
 export function CheckoutProvider({ children }: { children: React.ReactNode }) {
-  const { tier, color, paidFrother, messageCard, giftMessage, totalCents } = useOffer();
+  const { tier, color, unitColors, paidFrother, messageCard, giftMessage, totalCents } = useOffer();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const busy = useRef(false);
@@ -39,7 +39,7 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
       if (paidFrother) addons.push("milk-frother-wand");
       if (messageCard) addons.push("custom-message-card");
 
-      const contents = packLines(tier, color, paidFrother).map((line) => ({ id: line.variantId, quantity: line.quantity }));
+      const contents = packLines(tier, unitColors, paidFrother).map((line) => ({ id: line.variantId, quantity: line.quantity }));
       const value = dollars(totalCents);
       // Shared with Ownlane, so Meta counts the storefront's InitiateCheckout and Ownlane's as one.
       const initiateEventId = `ic-${crypto.randomUUID()}`;
@@ -52,6 +52,7 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
           body: JSON.stringify({
             tier,
             color,
+            unitColors,
             addons,
             visitorId: visitorId(),
             attribution: {
@@ -75,7 +76,7 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
 
         void trackEvent({ eventName: "AddToCart", eventId: crypto.randomUUID(), value, contents });
         void trackEvent({ eventName: "InitiateCheckout", eventId: initiateEventId, value, contents });
-        await trackShopifyCheckout(packProducts(tier, color, paidFrother), data.cartId ?? "");
+        await trackShopifyCheckout(packProducts(tier, unitColors, paidFrother), data.cartId ?? "");
         window.location.assign(checkoutUrl(data.checkoutUrl));
       } catch {
         busy.current = false;
@@ -83,7 +84,7 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
         setError("Checkout didn't open. Try the button again.");
       }
     })();
-  }, [color, giftMessage, messageCard, paidFrother, tier, totalCents]);
+  }, [color, giftMessage, messageCard, paidFrother, tier, totalCents, unitColors]);
 
   return <CheckoutContext.Provider value={{ buy, status, error }}>{children}</CheckoutContext.Provider>;
 }
