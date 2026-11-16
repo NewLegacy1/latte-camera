@@ -97,7 +97,17 @@ export function LatteStory() {
           </div>
         </section>
 
-        <section className="sec tint" id="pair">
+        <section className="sec tint" id="shipping">
+          <div className="wrap">
+            <div className="sec-head">
+              <div className="eyebrow">Shipping & Returns</div>
+              <h2>Free shipping. Easy returns.</h2>
+              <p>Ships in 1–2 business days. 30-day money-back guarantee on every order.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="sec" id="pair">
           <div className="wrap pair">
             <div className="pair-art" aria-hidden="true">
               <Image src="/images/press-black.png" alt="" width={160} height={150} />
