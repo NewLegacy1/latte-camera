@@ -98,14 +98,14 @@ export const packs: {
     tier: 2,
     name: "One to keep. One to give.",
     line: "2 cameras · 8 stencil cards",
-    badge: "Most popular",
+    badge: "MOST POPULAR",
     include: "Free cocoa & cinnamon refill kit",
   },
   {
     tier: 3,
     name: "The gifting set",
     line: "3 cameras · 12 stencil cards",
-    badge: "Both gifts included",
+    badge: "BOTH GIFTS INCLUDED",
     include: "Free refill kit + milk frother",
   },
 ];
