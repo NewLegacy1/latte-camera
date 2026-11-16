@@ -37,6 +37,8 @@ export function OfferProvider({ children }: { children: React.ReactNode }) {
   const setTier = useCallback((next: Tier) => {
     setTierState(next);
     setUnitColors((prev) => unitColorsForTier(next, prev));
+    // Three-pack already includes a free frother — drop any paid add-on.
+    if (next === 3) setFrother(false);
   }, []);
 
   const setColor = useCallback((next: PressColor) => {
