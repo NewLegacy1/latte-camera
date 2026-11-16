@@ -18,7 +18,7 @@ export function LatteBuyCta({ ctaRef }: { ctaRef: RefObject<HTMLButtonElement | 
     <>
       <p className="eta">
                 <span className="dot" aria-hidden="true" />
-                Dispatches in 2–5 business days
+                Ships in 1–2 business days · 30-day money-back
               </p>
               <p className="xmas-note">Order by November 20 for guaranteed Christmas delivery.</p>
               <button ref={ctaRef} className="btn cart-cta" type="button" id="buy-now" onClick={checkout.buy} disabled={checkout.status === "loading"}>
@@ -68,9 +68,9 @@ export function LatteBuyCta({ ctaRef }: { ctaRef: RefObject<HTMLButtonElement | 
                   </div>
                 </details>
                 <details>
-                  <summary><span>Shipping</span></summary>
+                  <summary><span>Shipping &amp; Returns</span></summary>
                   <div className="body">
-                    <p>Shipping is free on every order. Orders dispatch in 2–5 business days. <Link href="/shipping">See our shipping information</Link> for delivery estimates.</p>
+                    <p>Free shipping on every order. Ships in 1–2 business days. 30-day money-back guarantee. <Link href="/shipping">Shipping details</Link> · <Link href="/refund">Returns</Link>.</p>
                   </div>
                 </details>
               </div>
