@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/decode-images.mjs && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "decode-images": "node scripts/decode-images.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
