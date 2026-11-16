@@ -33,8 +33,10 @@ export function LatteBuyPanel({
         </>
       ) : (
         <>
-          <div className="eyebrow">The Latte Camera<span className="tm" aria-label="trademark">™</span></div>
-          <h1>Your usual coffee.<br />A little more personality.</h1>
+          <h1>
+            The Latte Camera<span className="tm" aria-label="trademark">™</span>
+            {" + 4 Stencil Set"}
+          </h1>
           <p className="pitch">Add cocoa or cinnamon, slide in a stencil card, and press to decorate the foam.</p>
         </>
       )}
