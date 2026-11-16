@@ -45,40 +45,40 @@ export const reviews = [
 
 export const slides: { src: string; alt: string }[] = [
   {
-    src: "/images/gallery-camera-cup.jpg",
-    alt: "The Latte Camera beside a speckled mug with heart latte art and Morning Mischief stencil cards.",
+    src: "/images/shot-press.jpg",
+    alt: "A hand pressing the Latte Camera over a latte, dusting a cocoa design onto the foam.",
+  },
+  {
+    src: "/images/shot-serve.jpg",
+    alt: "Finished lattes with cocoa designs served on a café table.",
+  },
+  {
+    src: "/images/shot-gift.jpg",
+    alt: "A couple lifting the Latte Camera out of a gift box. Example designs; included cards vary.",
+  },
+  {
+    src: "/images/shot-cards.jpg",
+    alt: "Reusable stencil cards from the Dear Latte starter pack. Designs vary by box.",
+  },
+  {
+    src: "/images/shot-designs.jpg",
+    alt: "Latte foam designs stamped with the Latte Camera.",
+  },
+  {
+    src: "/images/shot-steps.jpg",
+    alt: "Fill, slide, and press — the three steps to latte art with the Latte Camera.",
+  },
+  {
+    src: "/images/shot-before.jpg",
+    alt: "The Latte Camera beside a fresh latte, ready to stamp.",
   },
   {
     src: "/images/gallery-table.jpg",
     alt: "Dear Latte setup on a coffee table with designed lattes.",
   },
   {
-    src: "/images/gallery-stencils.jpg",
-    alt: "Reusable stencil cards from the Dear Latte starter pack. Designs vary by box.",
-  },
-  {
-    src: "/images/gallery-cup-note.jpg",
-    alt: "A finished latte with cocoa design beside a handwritten note.",
-  },
-  {
-    src: "/images/gallery-boxes.jpg",
-    alt: "Dear Latte gift boxes ready to ship.",
-  },
-  {
-    src: "/images/gallery-personality.jpg",
-    alt: "Latte Camera packaging with personality-forward branding.",
-  },
-  {
-    src: "/images/gallery-letter.jpg",
-    alt: "A Dear Latte letter and product insert.",
-  },
-  {
-    src: "/images/shot-press.jpg",
-    alt: "A hand pressing the Latte Camera over a latte, dusting a cocoa design onto the foam.",
-  },
-  {
-    src: "/images/shot-gift.jpg",
-    alt: "A couple lifting the Latte Camera out of a gift box. Example designs; included cards vary.",
+    src: "/images/gallery-camera-cup.jpg",
+    alt: "The Latte Camera beside a speckled mug with heart latte art and Morning Mischief stencil cards.",
   },
 ];
 
