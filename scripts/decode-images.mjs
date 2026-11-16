@@ -15,9 +15,14 @@ const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 
 for (const entry of manifest) {
   const parts = entry.parts ?? [entry.b64];
+  const missing = parts.filter((name) => !existsSync(join(b64Dir, name)));
+  if (missing.length) {
+    console.warn(`decode-images: skip ${entry.rel} (missing ${missing.join(", ")})`);
+    continue;
+  }
   const b64 = parts.map((name) => readFileSync(join(b64Dir, name), "utf8").trim()).join("");
   const outPath = join(root, entry.rel);
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, Buffer.from(b64, "base64"));
-  console.log(`decode-images: wrote ${entry.rel} (${entry.size} bytes)`);
+  console.log(`decode-images: wrote ${entry.rel} (${entry.size ?? Buffer.from(b64, "base64").length} bytes)`);
 }
