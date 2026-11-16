@@ -18,7 +18,7 @@
   --script: var(--font-allura), cursive;
   --r: 16px;
   --r-sm: 10px;
-  --gut: 16px;
+  --gut: 20px;
   color-scheme: light;
 }
 
@@ -44,6 +44,15 @@
   background: linear-gradient(90deg, #6f2a2e 0%, var(--apricot) 48%, #8e373b 100%);
   color: #fff7f2;
 }
+.store .sale-bar.simple {
+  justify-content: center;
+  gap: 10px;
+  padding: 9px var(--gut);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.store .sale-bar.simple strong { font-size: 12.5px; font-weight: 800; }
+.store .sale-bar.simple span { opacity: 0.9; }
 .store .sale-copy { display: grid; gap: 1px; min-width: 0; }
 .store .sale-copy strong {
   font-size: 13px;
