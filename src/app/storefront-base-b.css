@@ -109,6 +109,7 @@
 }
 .store .g-nav.prev { left: 14px; }
 .store .g-nav.next { right: 14px; }
+.store .g-nav.svg { width: 18px; height: 18px; }
 .store .g-nav svg { width: 18px; height: 18px; }
 .store .thumbs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
 .store .thumbs::-webkit-scrollbar { display: none; }
@@ -136,13 +137,13 @@
 @media (max-width: 899px) {
   .store .announce .ann-full { display: none; }
   .store .announce .ann-short { display: inline; }
-  .store .pdp { padding-block: 0 32px; }
-  .store .pdp .wrap { gap: 14px; padding-inline: 0; }
+  .store .pdp { padding-block: 0 40px; }
+  .store .pdp .wrap { gap: 24px; padding-inline: 0; }
   .store .main-img { border-radius: 0; }
   .store .thumbs { display: none; }
-  .store .info { gap: 10px; padding-inline: var(--gut); }
-  .store .info h1 { font-size: 30px; }
-  .store .pitch { font-size: 14px; }
+  .store .info { gap: 24px; padding-inline: var(--gut); }
+  .store .info h1 { font-size: 28px; line-height: 1.12; letter-spacing: -0.02em; }
+  .store .pitch { font-size: 14.5px; font-weight: 500; }
   .store .callouts li { font-size: 13px; }
 }
 
@@ -154,10 +155,26 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--green);
-  margin-top: 4px;
+  margin-top: 0;
 }
-.store .choose span { font-size: 11.5px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--soft); margin-left: 8px; }
-.store .choose:after { content: ""; flex: 1; height: 1px; background: var(--line); margin-left: 12px; }
+.store .choose.stacked {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.store .choose.stacked:after { display: none; }
+.store .choose .choose-label { letter-spacing: 0.1em; }
+.store .choose .choose-note,
+.store .choose span {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--soft);
+  margin-left: 0;
+}
+.store .choose:not(.stacked) span { margin-left: 8px; }
+.store .choose:not(.stacked):after { content: ""; flex: 1; height: 1px; background: var(--line); margin-left: 12px; }
 .store .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
 .store .swatches button {
   min-height: 48px;
@@ -175,7 +192,8 @@
 }
 .store .swatches button[aria-pressed="true"] {
   border-color: var(--green);
-  background: var(--sage-bg);
-  box-shadow: 0 2px 0 var(--green);
+  border-width: 2px;
+  background: var(--ivory);
+  box-shadow: none;
 }
 .store .swatches i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(56, 37, 31, 0.25); display: block; }
