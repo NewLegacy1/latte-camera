@@ -142,6 +142,37 @@
 .store .sec-head { display: grid; gap: 8px; margin-bottom: 26px; text-align: center; justify-items: center; }
 .store .sec-head p { color: var(--muted); max-width: 46ch; }
 .store .sec-head .script { font-family: var(--script); font-size: 34px; color: var(--green); }
+.store .how-steps {
+  list-style: none;
+  margin: 0 auto 28px;
+  padding: 0;
+  max-width: 640px;
+  display: grid;
+  gap: 12px;
+}
+.store .how-steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 14px;
+  align-items: start;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: #fff;
+}
+.store .how-steps b {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--apricot);
+}
+.store .how-steps span {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+}
 .store .clips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 820px; margin: 0 auto; align-items: start; }
 .store .clips figure { margin: 0; display: grid; gap: 8px; justify-items: center; }
 .store .clips img { width: 100%; height: auto; border-radius: var(--r); }
