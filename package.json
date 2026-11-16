@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/decode-images.mjs && node scripts/decode-logos.mjs || node scripts/decode-images.mjs; next build",
+    "build": "node scripts/decode-images.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "decode-images": "node scripts/decode-images.mjs",
