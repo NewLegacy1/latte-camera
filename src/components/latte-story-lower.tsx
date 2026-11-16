@@ -81,7 +81,7 @@ export function LatteStoryLower() {
               </details>
               <details>
                 <summary><span>Can I choose different colors in a multipack?</span></summary>
-                <div className="body"><p>Not yet. Every camera in your pack ships in the one color you select above.</p></div>
+                <div className="body"><p>Yes. Pick a color for each camera in your pack with the dropdowns under the pack you select.</p></div>
               </details>
               <details>
                 <summary><span>Does it need a battery?</span></summary>
@@ -101,7 +101,7 @@ export function LatteStoryLower() {
               </details>
               <details>
                 <summary><span>How long does shipping take?</span></summary>
-                <div className="body"><p>Free on every order. Orders dispatch in 2–5 business days. <Link href="/shipping">Shipping information</Link> has delivery estimates.</p></div>
+                <div className="body"><p>Free on every order. Ships in 1–2 business days. <Link href="/shipping">Shipping information</Link> has delivery estimates.</p></div>
               </details>
             </div>
           </div>
