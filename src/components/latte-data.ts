@@ -17,12 +17,12 @@ export function readCountdown(now = Date.now()): Countdown {
 }
 
 export const brandMarks = [
-  { name: "Starbucks", mark: "Starbucks" },
-  { name: "TikTok", mark: "TikTok" },
-  { name: "Amazon", mark: "amazon" },
-  { name: "Etsy", mark: "Etsy" },
-  { name: "Instagram", mark: "Instagram" },
-  { name: "Facebook", mark: "Facebook" },
+  { name: "Starbucks", src: "/images/logos/starbucks.png" },
+  { name: "TikTok", src: "/images/logos/tiktok.png" },
+  { name: "Amazon", src: "/images/logos/amazon.png" },
+  { name: "Etsy", src: "/images/logos/etsy.png" },
+  { name: "Instagram", src: "/images/logos/instagram.png" },
+  { name: "Facebook", src: "/images/logos/facebook.png" },
 ] as const;
 
 export const reviews = [
@@ -45,74 +45,68 @@ export const reviews = [
 
 export const slides: { src: string; alt: string }[] = [
   {
-    src: "/images/hero.jpg",
-    alt: "The white Latte Camera beside a latte with a cocoa Christmas tree on the foam. Example design; included cards vary.",
+    src: "/images/gallery-camera-cup.jpg",
+    alt: "The Latte Camera beside a speckled mug with heart latte art and Morning Mischief stencil cards.",
+  },
+  {
+    src: "/images/gallery-table.jpg",
+    alt: "Dear Latte setup on a coffee table with designed lattes.",
+  },
+  {
+    src: "/images/gallery-stencils.jpg",
+    alt: "Reusable stencil cards from the Dear Latte starter pack. Designs vary by box.",
+  },
+  {
+    src: "/images/gallery-cup-note.jpg",
+    alt: "A finished latte with cocoa design beside a handwritten note.",
+  },
+  {
+    src: "/images/gallery-boxes.jpg",
+    alt: "Dear Latte gift boxes ready to ship.",
+  },
+  {
+    src: "/images/gallery-personality.jpg",
+    alt: "Latte Camera packaging with personality-forward branding.",
+  },
+  {
+    src: "/images/gallery-letter.jpg",
+    alt: "A Dear Latte letter and product insert.",
   },
   {
     src: "/images/shot-press.jpg",
     alt: "A hand pressing the Latte Camera over a latte, dusting a cocoa design onto the foam.",
   },
   {
-    src: "/images/shot-designs.jpg",
-    alt: "Four lattes with cocoa designs beside matching stencil cards. Example designs; the cards in the box vary.",
-  },
-  {
-    src: "/images/shot-cards.jpg",
-    alt: "The white Latte Camera beside four reusable stencil cards. Example designs; the four cards in the box vary.",
-  },
-  {
-    src: "/images/shot-steps.jpg",
-    alt: "Three frames: a stencil card sliding in, the press dusting a design onto foam, and the finished latte.",
-  },
-  {
-    src: "/images/shot-serve.jpg",
-    alt: "The Latte Camera on a holiday table with three designed lattes, while friends take a photo.",
-  },
-  {
-    src: "/images/mornings.jpg",
-    alt: "A couple toasting lattes with cocoa designs beside the Latte Camera.",
-  },
-  {
     src: "/images/shot-gift.jpg",
     alt: "A couple lifting the Latte Camera out of a gift box. Example designs; included cards vary.",
-  },
-  {
-    src: "/images/shot-before.jpg",
-    alt: "Two lattes side by side, one plain and one with a cocoa design, with the Latte Camera in front.",
   },
 ];
 
 export const packs: {
   tier: Tier;
   name: string;
-  support: string;
+  line: string;
   badge?: string;
-  dark?: boolean;
-  bonuses: { title: string; note?: string }[];
+  include?: string;
 }[] = [
   {
     tier: 1,
     name: "One for you",
-    support: "Your morning coffee, dressed up",
-    bonuses: [],
+    line: "1 camera · 4 stencil cards",
   },
   {
     tier: 2,
     name: "One to keep. One to give.",
-    support: `Save ${money(packSaveCents(2))} compared with two singles`,
+    line: "2 cameras · 8 stencil cards",
     badge: "Most popular",
-    bonuses: [{ title: "Includes a FREE cocoa & cinnamon refill kit" }],
+    include: "Free cocoa & cinnamon refill kit",
   },
   {
     tier: 3,
     name: "The gifting set",
-    support: `Save ${money(packSaveCents(3))} compared with three singles, plus both gifts`,
-    badge: "Includes both gifts",
-    dark: true,
-    bonuses: [
-      { title: "Includes a FREE cocoa & cinnamon refill kit" },
-      { title: `Plus a FREE milk frother wand · ${money(PRICE.frother)} value` },
-    ],
+    line: "3 cameras · 12 stencil cards",
+    badge: "Both gifts included",
+    include: "Free refill kit + milk frother",
   },
 ];
 
@@ -134,17 +128,54 @@ export const moments = [
   },
 ] as const;
 
+export function stencilCount(tier: Tier) {
+  return tier * 4;
+}
+
 export function packLabel(tier: Tier) {
   switch (tier) {
     case 1:
-      return "1 Latte Camera";
+      return `1 camera · ${stencilCount(1)} stencil cards`;
     case 2:
-      return "2 Latte Cameras";
+      return `2 cameras · ${stencilCount(2)} stencil cards`;
     case 3:
-      return "3 Latte Cameras";
+      return `3 cameras · ${stencilCount(3)} stencil cards`;
     default: {
       const exhaustive: never = tier;
       return exhaustive;
     }
   }
 }
+
+export function packSummary(tier: Tier) {
+  switch (tier) {
+    case 1:
+      return packLabel(1);
+    case 2:
+      return `${packLabel(2)} · Free refill kit`;
+    case 3:
+      return `${packLabel(3)} · Free refill kit + frother`;
+    default: {
+      const exhaustive: never = tier;
+      return exhaustive;
+    }
+  }
+}
+
+export function packShortName(tier: Tier) {
+  switch (tier) {
+    case 1:
+      return "One for you";
+    case 2:
+      return "One to keep. One to give.";
+    case 3:
+      return "The gifting set";
+    default: {
+      const exhaustive: never = tier;
+      return exhaustive;
+    }
+  }
+}
+
+/** Kept for older imports that still reference money/packSaveCents through this module. */
+export { PRICE, money, packSaveCents };

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useCheckout } from "@/components/checkout-provider";
 import { LatteBuyPanel } from "@/components/latte-buy-panel";
-import { brandMarks, readCountdown, slides, type Countdown } from "@/components/latte-data";
+import { brandMarks, packShortName, slides } from "@/components/latte-data";
 import { Mark } from "@/components/latte-marks";
 import { LatteStory } from "@/components/latte-story";
 import { useOffer } from "@/components/offer-provider";
@@ -17,40 +17,19 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
   const [slide, setSlide] = useState(0);
   const [colorShot, setColorShot] = useState<PressColor | null>(null);
   const [sticky, setSticky] = useState(false);
-  const [countdown, setCountdown] = useState<Countdown>(() => readCountdown());
   const ctaRef = useRef<HTMLButtonElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
 
   useEffect(() => {
-    setCountdown(readCountdown());
-    const id = window.setInterval(() => setCountdown(readCountdown()), 1000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  useEffect(() => {
     const cta = ctaRef.current;
-    const hero = heroRef.current;
-    if (!cta || !hero) return;
-    let pastHero = false;
-    let ctaVisible = true;
-    const sync = () => setSticky(pastHero && !ctaVisible);
-    const heroObserver = new IntersectionObserver(([entry]) => {
+    if (!cta) return;
+    const observer = new IntersectionObserver(([entry]) => {
       if (!entry) return;
-      pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-      sync();
+      setSticky(!entry.isIntersecting);
     });
-    const ctaObserver = new IntersectionObserver(([entry]) => {
-      if (!entry) return;
-      ctaVisible = entry.isIntersecting;
-      sync();
-    });
-    heroObserver.observe(hero);
-    ctaObserver.observe(cta);
-    return () => {
-      heroObserver.disconnect();
-      ctaObserver.disconnect();
-    };
+    observer.observe(cta);
+    return () => observer.disconnect();
   }, []);
 
   const show = (index: number) => {
@@ -67,7 +46,6 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
   }, [slide, colorShot]);
 
   const current = slides[slide] ?? slides[0];
-  const cutout = `/images/press-${offer.color.toLowerCase()}.png`;
   const shown = colorShot
     ? {
         src: `/images/press-${colorShot.toLowerCase()}.png`,
@@ -80,30 +58,9 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
 
   return (
     <div className="store">
-      <div className={`sale-bar${countdown.live ? "" : " ended"}`} role="status">
-        <div className="sale-copy">
-          <strong>Early Black Friday Sale</strong>
-          <span className="sale-sub">Ends November 20 · Free shipping every order</span>
-        </div>
-        {countdown.live ? (
-          <div className="sale-clock" aria-label="Sale countdown">
-            {(
-              [
-                ["Days", countdown.days],
-                ["Hrs", countdown.hrs],
-                ["Min", countdown.min],
-                ["Sec", countdown.sec],
-              ] as const
-            ).map(([label, value]) => (
-              <span className="tick" key={label}>
-                <b>{value}</b>
-                <small>{label}</small>
-              </span>
-            ))}
-          </div>
-        ) : (
-          <span className="sale-ended">Sale ended — free shipping still on</span>
-        )}
+      <div className="sale-bar simple" role="status">
+        <strong>Early Black Friday</strong>
+        <span>Free shipping on every order</span>
       </div>
       <header className="header">
         <div className="wrap">
@@ -115,20 +72,6 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
           </a>
         </div>
       </header>
-
-      <div className="logo-rail" aria-hidden="true">
-        <div className="logo-track">
-          {[0, 1].map((loop) => (
-            <div className="logo-loop" key={loop}>
-              {brandMarks.map((brand) => (
-                <span className={`brand-mark ${brand.name.toLowerCase()}`} key={`${loop}-${brand.name}`}>
-                  {brand.mark}
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
 
       <main id="top">
         <section className="pdp" id="shop">
@@ -147,14 +90,39 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
                   if (Math.abs(dx) > 40) show(slide + (dx < 0 ? 1 : -1));
                 }}
               >
-                <Image key={shown.src} className={`shot${colorShot ? " contain" : ""}`} src={shown.src} alt={shown.alt} fill priority={slide === 0 && !colorShot} sizes="(min-width: 900px) 560px, 100vw" />
-                <em className="tag">Mechanical stencil press</em>
+                <Image
+                  key={shown.src}
+                  className={`shot${colorShot ? " contain" : ""}`}
+                  src={shown.src}
+                  alt={shown.alt}
+                  fill
+                  priority={slide === 0 && !colorShot}
+                  sizes="(min-width: 900px) 560px, 100vw"
+                />
                 <button type="button" className="g-nav prev" aria-label="Previous photo" onClick={() => show(slide - 1)}>
                   <Mark name="left" />
                 </button>
                 <button type="button" className="g-nav next" aria-label="Next photo" onClick={() => show(slide + 1)}>
                   <Mark name="right" />
                 </button>
+              </div>
+              <div className="gallery-logo-rail" aria-hidden="true">
+                <div className="logo-track">
+                  {[0, 1].map((loop) => (
+                    <div className="logo-loop" key={loop}>
+                      {brandMarks.map((brand) => (
+                        // eslint-disable-next-line @next/next/no-img-element -- grey brand strip
+                        <img
+                          className="brand-logo"
+                          key={`${loop}-${brand.name}`}
+                          src={brand.src}
+                          alt=""
+                          height={22}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="thumbs">
                 {slides.map((item, index) => (
@@ -183,19 +151,19 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
       <StoreFooter />
 
       <div className={`sticky${sticky ? " show" : ""}`} aria-hidden={!sticky}>
-        <div className="row">
-          <Image className="press" src={cutout} alt="" width={104} height={100} />
+        <div className="row slim">
           <div className="sticky-copy">
-            <strong>The Latte Camera</strong>
-            <span>{offer.tier === 1 ? "Buy 1" : offer.tier === 2 ? "Buy 2" : "Buy 3"} · {money(offer.totalCents)}</span>
+            <strong>{packShortName(offer.tier)}</strong>
+            <span>{money(offer.totalCents)}</span>
           </div>
           <button type="button" className="btn" onClick={checkout.buy} disabled={checkout.status === "loading"} tabIndex={sticky ? 0 : -1}>
             <span>{checkout.status === "loading" ? "Opening…" : "Buy now"}</span>
-            <span className="cta-arrow" aria-hidden="true">→</span>
           </button>
         </div>
       </div>
-      <div className={`toast${checkout.error ? " show" : ""}`} role="status">{checkout.error}</div>
+      <div className={`toast${checkout.error ? " show" : ""}`} role="status">
+        {checkout.error}
+      </div>
     </div>
   );
 }
