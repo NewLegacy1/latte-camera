@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useCheckout } from "@/components/checkout-provider";
 import { LatteBuyPanel } from "@/components/latte-buy-panel";
-import { brandMarks, packShortName, slides } from "@/components/latte-data";
+import { packShortName, slides } from "@/components/latte-data";
 import { Mark } from "@/components/latte-marks";
 import { LatteStory } from "@/components/latte-story";
 import { useOffer } from "@/components/offer-provider";
@@ -24,12 +24,19 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
   useEffect(() => {
     const cta = ctaRef.current;
     if (!cta) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry) return;
-      setSticky(!entry.isIntersecting);
-    });
-    observer.observe(cta);
-    return () => observer.disconnect();
+    // Sticky only after the shopper scrolls past the main Buy now (not while it is still below).
+    const update = () => {
+      const top = cta.getBoundingClientRect().top;
+      const bottom = cta.getBoundingClientRect().bottom;
+      setSticky(bottom < 0 || top < -8);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   const show = (index: number) => {
@@ -59,7 +66,6 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
   return (
     <div className="store">
       <div className="sale-bar simple" role="status">
-        <strong>Early Black Friday</strong>
         <span>Free shipping on every order</span>
       </div>
       <header className="header">
@@ -105,24 +111,6 @@ export function LattePage({ angle = "home" }: { angle?: "home" | "gift" }) {
                 <button type="button" className="g-nav next" aria-label="Next photo" onClick={() => show(slide + 1)}>
                   <Mark name="right" />
                 </button>
-              </div>
-              <div className="gallery-logo-rail" aria-hidden="true">
-                <div className="logo-track">
-                  {[0, 1].map((loop) => (
-                    <div className="logo-loop" key={loop}>
-                      {brandMarks.map((brand) => (
-                        // eslint-disable-next-line @next/next/no-img-element -- grey brand strip
-                        <img
-                          className="brand-logo"
-                          key={`${loop}-${brand.name}`}
-                          src={brand.src}
-                          alt=""
-                          height={22}
-                        />
-                      ))}
-                    </div>
-                  ))}
-                </div>
               </div>
               <div className="thumbs">
                 {slides.map((item, index) => (
