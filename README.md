@@ -44,7 +44,19 @@ Create these products and publish them to the Storefront sales channel. The Stor
 
 Create a Storefront API token with `unauthenticated_read_product_listings` and `unauthenticated_write_checkouts` (or the cart scopes your API version asks for). Put the token in `SHOPIFY_STOREFRONT_TOKEN`. Do not expose it to the browser.
 
-Buy now posts `{ tier, color, addons }` to `/api/checkout`. The server matches the variant, checks the locked price, adds the gift lines, and returns the Shopify checkout URL.
+Buy now posts `{ tier, color, addons }` to `/api/checkout`. The server matches the variant, adds gift lines and BUNDLE2 / BUNDLE3 when needed, and returns a Shopify checkout URL.
+
+## Ownlane (optional)
+
+Ownlane is a separate checkout app (`NewLegacy1/checkout`). Dear Latte has a dedicated Shopify custom app (`Checkout – Dear Latte`, client id `364a2fa461a3f5f346b6bff9967dfd79` in `checkout-platform/shopify.app.dearlatte.toml`). Until that app is installed and the shop is connected, Ownlane sessions return **Unknown store**.
+
+Buy now does **not** depend on Ownlane. Keep `OWNLANE_ENABLED` unset. To switch to Ownlane later:
+
+1. Open [Ownlane login](https://checkout-platform-two-app.vercel.app/login) and sign in to the Dear Latte workspace.
+2. Go to **Accounts**. Do not reuse an old Partner “install link” — those expire and Shopify shows “This installation link can't be used.”
+3. Enter `mnhkb0-af.myshopify.com` and click **Connect store**. Approve the app in Shopify Admin while still logged into Ownlane (the OAuth state cookie lasts 10 minutes).
+4. If Connect still fails, open Shopify Dev Dashboard → **Checkout – Dear Latte** → create a **new** custom-distribution install link for this store, then Connect again from Accounts (not from a bookmark).
+5. Wait for catalog sync, set `OWNLANE_ENABLED=true` and `OWNLANE_CHECKOUT_HOST=https://checkout-platform-two-pay.vercel.app` on the latte-camera Vercel project, and redeploy.
 
 ## Meta
 
