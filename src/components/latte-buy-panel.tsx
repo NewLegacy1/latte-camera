@@ -116,7 +116,7 @@ export function LatteBuyPanel({
           <ul>
             <li>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/gift-refill.jpg" alt="" width={44} height={44} />
+              <img src="/images/gift.jpg" alt="" width={44} height={44} />
               <span>
                 <b>Cocoa & cinnamon refill kit</b>
                 <small>Included free</small>
@@ -125,7 +125,7 @@ export function LatteBuyPanel({
             {offer.tier === 3 ? (
               <li>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/gift-frother.jpg" alt="" width={44} height={44} />
+                <img src="/images/shot-gift.jpg" alt="" width={44} height={44} />
                 <span>
                   <b>Milk frother</b>
                   <small>Included free</small>
