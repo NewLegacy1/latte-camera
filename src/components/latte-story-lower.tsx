@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { reviews } from "@/components/latte-data";
 import { Mark } from "@/components/latte-marks";
 
 export function LatteStoryLower() {
@@ -37,25 +36,6 @@ export function LatteStoryLower() {
           </div>
         </section>
 
-        <section className="sec tint" id="love">
-          <div className="wrap">
-            <div className="sec-head">
-              <div className="eyebrow">Love notes</div>
-              <h2>Mornings people actually look forward to.</h2>
-            </div>
-            <div className="reviews">
-              {reviews.map((review) => (
-                <article className="review" key={review.name}>
-                  <div className="stars" aria-label="5 out of 5 stars">★★★★★</div>
-                  <h3>{review.title}</h3>
-                  <p>“{review.body}”</p>
-                  <cite>— {review.name}</cite>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className="sec" id="faq">
           <div className="wrap">
             <div className="sec-head">
@@ -81,7 +61,7 @@ export function LatteStoryLower() {
               </details>
               <details>
                 <summary><span>Can I choose different colors in a multipack?</span></summary>
-                <div className="body"><p>Yes. Pick a color for each camera in your pack with the dropdowns under the pack you select.</p></div>
+                <div className="body"><p>Every camera in your pack ships in the color you select above. Choose Black, White, or Green before checkout.</p></div>
               </details>
               <details>
                 <summary><span>Does it need a battery?</span></summary>
@@ -101,7 +81,7 @@ export function LatteStoryLower() {
               </details>
               <details>
                 <summary><span>How long does shipping take?</span></summary>
-                <div className="body"><p>Free on every order. Ships in 1–2 business days. <Link href="/shipping">Shipping information</Link> has delivery estimates.</p></div>
+                <div className="body"><p>Free on every order. Dispatches in 2–5 business days. <Link href="/shipping">Shipping information</Link> has delivery estimates.</p></div>
               </details>
             </div>
           </div>
