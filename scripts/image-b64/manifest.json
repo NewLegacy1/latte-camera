@@ -1,0 +1,70 @@
+[
+  {
+    "rel": "public/images/gift-refill.jpg",
+    "b64": "public__images__gift-refill.jpg.part00.b64",
+    "size": 286470,
+    "parts": [
+      "public__images__gift-refill.jpg.part00.b64",
+      "public__images__gift-refill.jpg.part01.b64",
+      "public__images__gift-refill.jpg.part02.b64",
+      "public__images__gift-refill.jpg.part03.b64",
+      "public__images__gift-refill.jpg.part04.b64"
+    ]
+  },
+  {
+    "rel": "public/images/gift-frother.jpg",
+    "b64": "public__images__gift-frother.jpg.b64",
+    "size": 20842,
+    "parts": [
+      "public__images__gift-frother.jpg.b64"
+    ]
+  },
+  {
+    "rel": "public/images/logos/amazon.png",
+    "b64": "public__images__logos__amazon.png.b64",
+    "size": 1688,
+    "parts": [
+      "public__images__logos__amazon.png.b64"
+    ]
+  },
+  {
+    "rel": "public/images/logos/etsy.png",
+    "b64": "public__images__logos__etsy.png.b64",
+    "size": 1292,
+    "parts": [
+      "public__images__logos__etsy.png.b64"
+    ]
+  },
+  {
+    "rel": "public/images/logos/facebook.png",
+    "b64": "public__images__logos__facebook.png.b64",
+    "size": 2370,
+    "parts": [
+      "public__images__logos__facebook.png.b64"
+    ]
+  },
+  {
+    "rel": "public/images/logos/instagram.png",
+    "b64": "public__images__logos__instagram.png.b64",
+    "size": 2358,
+    "parts": [
+      "public__images__logos__instagram.png.b64"
+    ]
+  },
+  {
+    "rel": "public/images/logos/starbucks.png",
+    "b64": "public__images__logos__starbucks.png.b64",
+    "size": 2848,
+    "parts": [
+      "public__images__logos__starbucks.png.b64"
+    ]
+  },
+  {
+    "rel": "public/images/logos/tiktok.png",
+    "b64": "public__images__logos__tiktok.png.b64",
+    "size": 1062,
+    "parts": [
+      "public__images__logos__tiktok.png.b64"
+    ]
+  }
+]
