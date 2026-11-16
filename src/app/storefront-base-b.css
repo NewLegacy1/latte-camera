@@ -29,14 +29,14 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  height: 62px;
+  height: 64px;
 }
 .store .header .logo { grid-column: 2; text-decoration: none; }
 .store .logo-wordmark,
 .policy-page .logo-wordmark {
-  height: 38px !important;
-  width: auto !important;
-  max-width: 68vw;
+  height: auto !important;
+  width: 175px !important;
+  max-width: 56vw;
 }
 .store footer.site .logo-lockup,
 .policy-page footer.site .logo-lockup {
@@ -45,7 +45,10 @@
 }
 @media (min-width: 768px) {
   .store .logo-wordmark,
-  .policy-page .logo-wordmark { height: 46px !important; }
+  .policy-page .logo-wordmark {
+    height: auto !important;
+    width: 210px !important;
+  }
 }
 .store .icon-btn {
   justify-self: end;
