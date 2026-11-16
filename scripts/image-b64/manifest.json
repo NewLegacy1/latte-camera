@@ -2,21 +2,20 @@
   {
     "rel": "public/images/gift-refill.jpg",
     "b64": "public__images__gift-refill.jpg.part00.b64",
-    "size": 286470,
+    "size": 31166,
     "parts": [
       "public__images__gift-refill.jpg.part00.b64",
       "public__images__gift-refill.jpg.part01.b64",
-      "public__images__gift-refill.jpg.part02.b64",
-      "public__images__gift-refill.jpg.part03.b64",
-      "public__images__gift-refill.jpg.part04.b64"
+      "public__images__gift-refill.jpg.part02.b64"
     ]
   },
   {
     "rel": "public/images/gift-frother.jpg",
-    "b64": "public__images__gift-frother.jpg.b64",
+    "b64": "public__images__gift-frother.jpg.part00.b64",
     "size": 20842,
     "parts": [
-      "public__images__gift-frother.jpg.b64"
+      "public__images__gift-frother.jpg.part00.b64",
+      "public__images__gift-frother.jpg.part01.b64"
     ]
   },
   {
