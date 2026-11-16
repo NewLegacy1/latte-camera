@@ -25,29 +25,36 @@ export function LatteStory() {
           <div className="wrap">
             <div className="sec-head">
               <div className="eyebrow">How it works</div>
-              <h2>Scoop. Slide. Press.</h2>
-              <p>A little cocoa or cinnamon is all it takes to finish your foam.</p>
+              <h2>Café-quality latte art in seconds.</h2>
+              <p>Five quick steps from stencil to foam.</p>
             </div>
+            <ol className="how-steps">
+              <li><b>Step 1</b><span>Slide a stencil card into the bottom slot.</span></li>
+              <li><b>Step 2</b><span>Place DearLatte on top of your cup — it sits right on the rim.</span></li>
+              <li><b>Step 3</b><span>Press the gold button on top.</span></li>
+              <li><b>Step 4</b><span>DearLatte drops powder (cinnamon, cocoa, matcha — your choice) through the stencil onto the foam.</span></li>
+              <li><b>Step 5</b><span>Lift and enjoy your café-quality latte art in seconds.</span></li>
+            </ol>
             <div className="clips">
               <figure>
                 <Image unoptimized src="/images/scoop-cinnamon.gif" alt="A spoon scooping cinnamon from a jar." width={135} height={240} />
                 <figcaption>
                   <b>Add your powder</b>
-                  <small>Fill with cocoa or cinnamon.</small>
+                  <small>Cocoa, cinnamon, or matcha.</small>
                 </figcaption>
               </figure>
               <figure>
                 <Image unoptimized src="/images/slide-card.gif" alt="A stencil card sliding into the Latte Camera." width={135} height={240} />
                 <figcaption>
-                  <b>Choose your design</b>
-                  <small>Slide a reusable stencil card into place.</small>
+                  <b>Slide your stencil</b>
+                  <small>Card goes in the bottom slot.</small>
                 </figcaption>
               </figure>
               <figure className="result">
                 <Image src="/images/how-result.jpg" alt="Two finished lattes with cocoa designs. Example designs; included cards vary." width={768} height={768} />
                 <figcaption>
                   <b>Press and reveal</b>
-                  <small>Hold over the foam and press to add your design.</small>
+                  <small>Hold on the rim and press the gold button.</small>
                 </figcaption>
               </figure>
             </div>
@@ -80,11 +87,11 @@ export function LatteStory() {
             <div className="sec-head">
               <div className="eyebrow">What’s included</div>
               <h2>Your first four designs start here.</h2>
-              <p>Every box includes a Latte Camera and four reusable stencil cards, ready for your next coffee.</p>
+              <p>Every box is ready for your next coffee.</p>
             </div>
             <div className="box-list">
-              <div className="box-row"><span className="num-pill">1</span><span><b>1 Latte Camera</b>A fully mechanical stencil press.</span></div>
-              <div className="box-row"><span className="num-pill">4</span><span><b>4 reusable stencil cards</b>Choose a card, make your design, and use it again.</span></div>
+              <div className="box-row"><span className="num-pill">1×</span><span><b>DearLatte Latte Art Printer</b>A fully mechanical stencil press.</span></div>
+              <div className="box-row"><span className="num-pill">1×</span><span><b>Stencil Starter Pack (4 Stencils)</b>Reusable cards — designs vary by box.</span></div>
             </div>
             <p className="fine-center">Stencil designs vary by box and cannot be selected individually.</p>
           </div>
