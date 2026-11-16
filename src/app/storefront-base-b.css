@@ -109,7 +109,6 @@
 }
 .store .g-nav.prev { left: 14px; }
 .store .g-nav.next { right: 14px; }
-.store .g-nav.svg { width: 18px; height: 18px; }
 .store .g-nav svg { width: 18px; height: 18px; }
 .store .thumbs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
 .store .thumbs::-webkit-scrollbar { display: none; }
