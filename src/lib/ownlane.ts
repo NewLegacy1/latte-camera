@@ -237,21 +237,25 @@ export async function createCheckout(request: CheckoutRequest, headers: Headers)
   };
 
   const value = dollars(payableCents(request.tier, { frother: wantsPaidFrother, messageCard: wantsCard }));
-  const ownlaneEnabled = /^(1|true|yes)$/i.test(process.env.OWNLANE_ENABLED ?? "");
 
-  // Ownlane only when explicitly enabled. Until mnhkb0-af is connected in Ownlane
-  // Accounts (fresh Connect store OAuth — expired Partner install links fail), Buy now
-  // uses Shopify checkout with the same BUNDLE2 / BUNDLE3 codes.
-  if (ownlaneEnabled) {
+  // Ownlane headless sessions (Checkout buttons docs). Opt out with OWNLANE_ENABLED=0.
+  // Until Accounts Connect store finishes for mnhkb0-af, Ownlane returns Unknown store
+  // and we fall through to Shopify — same as "if this checkout is ever unavailable."
+  const ownlaneDisabled = /^(0|false|no|off)$/i.test(process.env.OWNLANE_ENABLED ?? "");
+  if (!ownlaneDisabled) {
     const host = (process.env.OWNLANE_CHECKOUT_HOST || DEFAULTS.checkoutHost).replace(/\/$/, "");
     let response: Response | null = null;
     try {
       response = await fetch(`${host}/api/checkout/sessions`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({
           shop: shopDomain(),
-          lines: lines.map((line) => ({ variantId: line.variantId, quantity: line.quantity, sellingPlanId: null })),
+          lines: lines.map((line) => ({
+            variantId: line.variantId,
+            quantity: line.quantity,
+            sellingPlanId: null,
+          })),
           discountCode,
           visitorId: request.visitorId,
           attribution,
@@ -271,22 +275,6 @@ export async function createCheckout(request: CheckoutRequest, headers: Headers)
         value,
       };
     }
-
-    if (shopifyCart?.checkoutUrl) {
-      return {
-        checkoutUrl: shopifyCart.checkoutUrl,
-        cartId: shopifyCart.id,
-        variantId: ids.colors[request.color],
-        value,
-      };
-    }
-
-    const raw = payload.error?.trim() || "";
-    const message =
-      !raw || /unknown store/i.test(raw)
-        ? "Checkout isn't ready yet. Try the button again in a moment."
-        : raw;
-    throw new CheckoutError(message, 502);
   }
 
   if (shopifyCart?.checkoutUrl) {
