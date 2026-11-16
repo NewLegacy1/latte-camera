@@ -5,7 +5,7 @@ import { LatteBuyCta } from "@/components/latte-buy-cta";
 import { packs } from "@/components/latte-data";
 import { Mark, PackArt } from "@/components/latte-marks";
 import { useOffer } from "@/components/offer-provider";
-import { PRICE, SWATCH, colors, money, packCompareCents, packSaveCents, type PressColor } from "@/lib/offer";
+import { PRICE, colors, money, packCompareCents, packSaveCents, type PressColor } from "@/lib/offer";
 
 export function LatteBuyPanel({
   angle,
@@ -23,7 +23,10 @@ export function LatteBuyPanel({
 
   return (
             <div className="info">
-              <div className="eyebrow">The Latte Camera</div>
+              <div className="trust-eyebrow" aria-label="Loved by 1400+ coffee enthusiasts">
+                <span className="trust-stars" aria-hidden="true">★★★★★</span>
+                <span>Loved by 1400+ Coffee Enthusiasts</span>
+              </div>
               {angle === "gift" ? (
                 <>
                   <h1>For the person who already has the coffee setup.</h1>
@@ -33,7 +36,9 @@ export function LatteBuyPanel({
                 </>
               ) : (
                 <>
-                  <h1>Make your morning a little more café.</h1>
+                  <h1>
+                    The Latte Camera<span className="tm" aria-label="trademark">™</span> + 4 Stencil Set
+                  </h1>
                   <p className="pitch">
                     Turn a foamy coffee into something worth bringing to the table. Add cocoa or cinnamon, slide in a stencil card, and press to finish your drink with a little art.
                   </p>
@@ -51,40 +56,28 @@ export function LatteBuyPanel({
                 <span>Every pack includes <b>4 reusable stencil cards</b> — designs vary by box</span>
               </p>
 
-              <div className="choose">
-                Color — {offer.color}
-              </div>
-              <div className="swatches" role="group" aria-label="Press color">
-                {colors.map((name) => (
-                  <button
-                    key={name}
-                    type="button"
-                    aria-pressed={offer.color === name}
-                    onClick={() => onShowColor(name)}
-                  >
-                    <i style={{ background: SWATCH[name] }} />
-                    {name}
-                  </button>
-                ))}
-              </div>
-              <p className="color-note">Every camera in your pack ships in {offer.color}.</p>
-
               <div className="choose">Choose a pack<span>Free shipping</span></div>
               <div className="packs" role="radiogroup" aria-label="Pack">
                 {packs.map((pack) => {
                   const selected = offer.tier === pack.tier;
                   const cameras = pack.tier === 1 ? "1 Latte Camera" : `${pack.tier} Latte Cameras`;
                   return (
-                    <button
+                    <div
                       key={pack.tier}
-                      type="button"
                       role="radio"
                       aria-checked={selected}
+                      tabIndex={selected ? 0 : -1}
                       className={`pack${selected ? " on" : ""}${pack.badge ? " has-badge" : ""}`}
                       onClick={() => offer.setTier(pack.tier)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          offer.setTier(pack.tier);
+                        }
+                      }}
                     >
                       {pack.badge ? <span className={`badge${pack.dark ? " dark" : ""}`}>{pack.badge}</span> : null}
-                      <span className="pack-main">
+                      <div className="pack-main">
                         <PackArt tier={pack.tier} color={offer.color} />
                         <span className="nm">
                           <strong>{pack.name}</strong>
@@ -98,16 +91,16 @@ export function LatteBuyPanel({
                           <b>{money(PRICE.tier[pack.tier])}</b>
                           {pack.tier === 1 ? <s>{money(packCompareCents(1))}</s> : <em className="save">Save {money(packSaveCents(pack.tier))}</em>}
                         </span>
-                      </span>
-                      <span className="pack-includes">
+                      </div>
+                      <div className="pack-includes">
                         <Mark name="check" />
                         <span>
                           <b>{cameras}</b>
                           <small>Each includes 4 reusable stencil cards</small>
                         </span>
-                      </span>
+                      </div>
                       {pack.bonuses.length > 0 ? (
-                        <span className="pack-extra">
+                        <div className="pack-extra">
                           {pack.bonuses.map((bonus) => (
                             <span className="bonus" key={bonus.title}>
                               <Mark name="check" />
@@ -117,9 +110,48 @@ export function LatteBuyPanel({
                               </span>
                             </span>
                           ))}
-                        </span>
+                        </div>
                       ) : null}
-                    </button>
+                      {selected ? (
+                        <div
+                          className="pack-colors"
+                          onClick={(event) => event.stopPropagation()}
+                          onKeyDown={(event) => event.stopPropagation()}
+                        >
+                          <div className="pack-color-label">Color</div>
+                          {Array.from({ length: pack.tier }, (_, index) => {
+                            const unitColor = offer.unitColors[index] ?? offer.color;
+                            return (
+                              <label className="pack-color-row" key={`${pack.tier}-${index}`}>
+                                {/* eslint-disable-next-line @next/next/no-img-element -- tiny color preview thumb */}
+                                <img
+                                  className="pack-color-thumb"
+                                  src={`/images/press-${unitColor.toLowerCase()}.png`}
+                                  alt=""
+                                  width={44}
+                                  height={44}
+                                />
+                                <select
+                                  aria-label={`Camera ${index + 1} color`}
+                                  value={unitColor}
+                                  onChange={(event) => {
+                                    const next = event.target.value as PressColor;
+                                    offer.setUnitColor(index, next);
+                                    onShowColor(next);
+                                  }}
+                                >
+                                  {colors.map((name) => (
+                                    <option key={name} value={name}>
+                                      {name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
                   );
                 })}
               </div>
@@ -136,7 +168,7 @@ export function LatteBuyPanel({
                 <div className="gift-row">
                   <span className={`gift-card${refillOn ? "" : " locked"}`}>
                     <span className="gift-photo">
-                      {/* eslint-disable-next-line @next/next/no-img-element -- data URI gift still */}
+                      {/* eslint-disable-next-line @next/next/no-img-element -- gift still */}
                       <img src={"/images/gift-refill.jpg"} alt="Dear Latte cocoa and cinnamon refill pouches" />
                       {!refillOn ? <span className="gift-lock"><Mark name="lock" /> Locked</span> : null}
                     </span>
@@ -147,7 +179,7 @@ export function LatteBuyPanel({
                   </span>
                   <span className={`gift-card${frotherOn ? "" : " locked"}`}>
                     <span className="gift-photo">
-                      {/* eslint-disable-next-line @next/next/no-img-element -- data URI gift still */}
+                      {/* eslint-disable-next-line @next/next/no-img-element -- gift still */}
                       <img src={"/images/gift-frother.jpg"} alt="Handheld milk frother wand" />
                       {!frotherOn ? <span className="gift-lock"><Mark name="lock" /> Locked</span> : null}
                     </span>
