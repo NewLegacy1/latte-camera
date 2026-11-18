@@ -1,84 +1,24 @@
-# Dear Latte — The Latte Camera
+# DearLatte storefront
 
-A headless storefront for The Latte Camera, a fully mechanical stencil press. Shopify is the system of record for the catalog, checkout, orders, and fulfillment. This site never charges a card.
+Use Node.js 20.9 or later.
 
-The page layout follows the Roofroof product-page pattern: announcement bar, centered wordmark, square gallery, pack cards, an unlock grid, a sticky buy bar, and a dark footer. Colors, type, and the offer stay Dear Latte.
-
-Tagline: A little love in every cup.
-
-## Run it
-
-```bash
+```sh
 npm install
-npm run dev -- --port 43123 --hostname 0.0.0.0
+npm run dev
 ```
 
-Open [http://127.0.0.1:43123](http://127.0.0.1:43123).
+Open http://localhost:3000. The static production build runs with `npm run build` and writes to `out/`. Serve that directory with any static web host.
 
-Copy `.env.example` to `.env.local` and fill in Shopify and Meta when you have them. Without those values the page still renders. Buy now returns a clear message instead of inventing a payment.
+- Edit preview prices, gifts, gallery data, and policy copy in `app/catalog.ts`. The offline preview uses CAD. The hosted build can load Shopify Markets pricing for the shopper's selected shipping country.
+- Copy `.env.example` to `.env.local` and set the public Storefront API token. Publish the Duo and Trio products to the Headless sales channel so Shopify can supply their variant IDs and prices. Keep all private credentials out of the storefront.
+- The current campaign ends at midnight Eastern after November 20, 2026. The dispatch line rolls over at Toronto midnight. Adjust the campaign date in `app/offer-clock.ts` for future offers.
 
-## The offer
 
-Colors Black, White, and Green are the same price.
 
-| Pack | Price | Included |
-| --- | --- | --- |
-| Buy 1 | $60.00 (compare-at $99.95) | The press |
-| Buy 2, preselected, Most Popular | $100.00 | The gift pair, plus a free cocoa & cinnamon refill kit |
-| Buy 3, Best Value — Buy 2 Get 1 Half Off | $150.00 | Free refill kit and a free milk frother wand |
+- The ZIP also includes a standalone HTML preview. Open it in a browser to try the product configurator and bag without installation.
 
-Free shipping on every tier. Dispatched in 1-3 business days. Arrives in about 5-15 days.
+## Shopify checkout
 
-Milk Frother Wand is a $14.95 add-on on Buy 1 and Buy 2. Buy 3 already includes it, so the paid add-on hides. Custom Message Card is $19.95: "Put their name on it."
+The storefront creates a Shopify cart with the selected market, bundle variants, colours, and quantities, then opens the checkout URL returned by Shopify. Shopify controls payment, taxes, delivery rates, and order creation.
 
-Every box is 1 press and 4 reusable stencil cards. Designs vary.
-
-## Shopify setup
-
-Create these products and publish them to the Storefront sales channel. The Storefront API charges the variant price. It cannot discount a line, so free gifts have to be $0.00 variants or checkout refuses the cart.
-
-- `dear-latte-stencil-press` — options Pack (`Pack 1`, `Pack 2`, `Pack 3`) and Color (`Black`, `White`, `Green`). Prices: Pack 1 $60.00, Pack 2 $100.00, Pack 3 $150.00. Compare-at $99.95 on Pack 1 only. Buy 3 is labeled Buy 2 Get 1 Half Off.
-- `cocoa-cinnamon-refill-kit` — one variant at **$0.00**. Added on Buy 2 and Buy 3.
-- `milk-frother-wand` — two variants on the same product: **$14.95** (paid add-on) and **$0.00** (Buy 3 gift). Name the gift variant something like `Gift`.
-- `custom-message-card` — **$19.95**. The buyer's words are sent as the cart attribute `gift_message`.
-
-Create a Storefront API token with `unauthenticated_read_product_listings` and `unauthenticated_write_checkouts` (or the cart scopes your API version asks for). Put the token in `SHOPIFY_STOREFRONT_TOKEN`. Do not expose it to the browser.
-
-Buy now posts `{ tier, color, addons }` to `/api/checkout`. The server matches the variant, adds gift lines and BUNDLE2 / BUNDLE3 when needed, and returns a Shopify checkout URL.
-
-## Ownlane
-
-Ownlane runs checkout at [checkout.dearlatte.shop](https://checkout.dearlatte.shop). Buy now posts to Ownlane’s headless sessions API (`/api/checkout/sessions` on `checkout-platform-two-pay.vercel.app`) with `shop`, line items, `discountCode`, and `visitorId` — the same pattern as Ownlane → Checkout buttons → Headless storefront.
-
-**Accounts first.** Until the shop is connected, Ownlane returns **Unknown store** and the storefront falls back to Shopify checkout (BUNDLE2 / BUNDLE3 still apply). Expired Partner “install link” bookmarks fail with “This installation link can't be used” — always start Connect from Ownlane Accounts.
-
-1. Open [Ownlane](https://checkout-platform-two-app.vercel.app) signed in as Dear Latte (`hello@dearlatte.shop`).
-2. Go to **Accounts** → Connect `mnhkb0-af.myshopify.com`. Approve in Shopify Admin in the same browser session (OAuth state lasts ~10 minutes).
-3. Wait for catalog sync. Checkout buttons then open on `checkout.dearlatte.shop`. No storefront redeploy is required.
-4. Set `OWNLANE_ENABLED=0` only if you need to force Shopify-only.
-
-## Meta
-
-The pixel fires PageView, ViewContent, AddToCart, and InitiateCheckout. Each event has an `event_id` that is also sent to `/api/events` for the Conversions API, so Meta can dedupe. Purchase is never fired here. Turn on Shopify's Meta channel so Purchase comes from checkout only.
-
-`_fbp`, `_fbc`, `fbclid`, and `utm_*` are stored as Shopify cart attributes. Example ad link:
-
-```text
-/?utm_source=meta&utm_medium=paid&utm_campaign=cbo&utm_content=latte-camera-buy2
-```
-
-## Photographs still needed
-
-The page uses brand-board crops plus diagrams for the three steps. Replace the diagrams when these exist. Keep about 8% safe margin inside rounded frames.
-
-| Shot | Size | Notes |
-| --- | --- | --- |
-| Press on the cup | 2000×2000 | The camera press sitting on a foam top. Not a photo printer. |
-| Fill | 1600×1200 | Spooning cocoa or cinnamon into the press. |
-| Slide | 1600×1200 | A stencil card sliding in. |
-| Press and lift | 1600×1200 | One press, then the design on the foam. |
-| Gift unboxing | 1600×2000 | Kraft, tissue, handwritten-style note. |
-| Collection stills | 2000×2000 | Love Notes, Birthday Wishes, Holiday Cheer, Morning Mischief. Caption them as the library, not the contents of one box. |
-| Open graph | 1200×630 | Wordmark, press, one foamed cup. |
-
-Do not caption any photo as printing a picture, and do not show a set of 12 cards as what ships.
+Before launch, check the Single, Duo, and Trio through Shopify checkout. Confirm both bundle products include the promised gift components and that Shopify applies free standard shipping to the Duo and Trio in each offered market.
