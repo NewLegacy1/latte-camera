@@ -14,6 +14,7 @@ type Variant = {
   availableForSale: boolean;
   selectedOptions: { name: string; value: string }[];
   price: Money;
+  compareAtPrice?: Money | null;
 };
 type Product = { variants: { nodes: Variant[]; pageInfo: { hasNextPage: boolean } } };
 export type Country = { isoCode: string; name: string; currency: { isoCode: string } };
@@ -70,7 +71,7 @@ export async function getMarket(country: string, signal: AbortSignal): Promise<M
     }
     fragment BundleVariants on Product {
       variants(first: 100) {
-        nodes { id availableForSale selectedOptions { name value } price { amount currencyCode } }
+        nodes { id availableForSale selectedOptions { name value } price { amount currencyCode } compareAtPrice { amount currencyCode } }
         pageInfo { hasNextPage }
       }
     }`,
@@ -101,6 +102,16 @@ export function marketPrice(market: Market | null, selection: Selection): number
   const variant = findVariant(market, selection);
   const amount = Number(variant?.price.amount);
   return Number.isFinite(amount) && amount >= 0 ? Math.round(amount * 100) : null;
+}
+
+export function saleComparison(market: Market | null, selection: Selection) {
+  const variant = market ? findVariant(market, selection) : undefined;
+  const compare = variant?.compareAtPrice;
+  const price = marketPrice(market, selection);
+  const amount = compare && compare.currencyCode === market?.country.currency.isoCode ? Math.round(Number(compare.amount) * 100) : null;
+  if (amount !== null && Number.isFinite(amount) && price !== null && amount > price) return { amount, label: "Regular price" };
+  const separate = cameraComparison(market, selection);
+  return separate !== null && price !== null && separate > price ? { amount: separate, label: "Bought separately" } : null;
 }
 
 export function cameraComparison(market: Market | null, selection: Selection): number | null {

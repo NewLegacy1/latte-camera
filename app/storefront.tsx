@@ -7,7 +7,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { bundles, colours, defaultColours, faq, gallery, gifts, info, money, readCart, reviews, selectionKey, type Review, type BundleIndex, type CartItem, type Colour, type Selection } from "./catalog";
 import MarketingPreferences from "./marketing-preferences";
 import { marketingPreference, trackMeta } from "./meta";
-import { cameraComparison, cartAmount, findVariant, goToCheckout, marketPrice, type Market } from "./commerce";
+import { cameraComparison, saleComparison, cartAmount, findVariant, goToCheckout, marketPrice, type Market } from "./commerce";
 import { useShopifyMarket } from "./use-shopify-market";
 import { NextDispatch, SaleBanner } from "./offer-timing";
 
@@ -434,16 +434,21 @@ export default function Storefront() {
             <li><Camera size={15}/> 12 reusable designs</li>
             <li><Sparkles size={15}/> Ready in seconds</li>
           </ul>
-          <div className="section-heading" id="bundles"><h2>Bundle &amp; Save</h2><span>Mix and match colours</span></div>
+          <div className="section-heading" id="bundles"><h2>Black Friday Offers</h2><span>Mix and match colours</span></div>
           <div className="bundle-grid" role="group" aria-label="Choose a camera bundle">
             {bundles.map((option, i) => {
-              const price = online && !market ? null : marketPrice(market, {bundle: i as BundleIndex, colours: finishes.slice(0, option.count)});
+              const offerSelection = {bundle: i as BundleIndex, colours: finishes.slice(0, option.count)};
+              const price = online && !market ? null : marketPrice(market, offerSelection);
+              const comparison = price === null ? null : saleComparison(market, offerSelection);
               return <button type="button" key={option.count} className="bundle-card" aria-pressed={bundle === i} onClick={() => setBundle(i as BundleIndex)}>
               {"popular" in option && <span className="popular">Most Popular</span>}
               {option.count === 3 && <span className="popular best-value">Best Value</span>}
               <BundleArt finish={option.finishes}/>
               <span className="bundle-name">{option.name}</span>
-              <strong>{price === null ? "—" : money(price, true, currency)}</strong>
+              <span className="bundle-sale-label">Black Friday price</span>
+              <div className="bundle-offer-price">{comparison && <s aria-label={comparison.label}>{money(comparison.amount, true, currency)}</s>}<strong>{price === null ? "—" : money(price, true, currency)}</strong></div>
+              {comparison && price !== null && <span className="bundle-saving">Save {money(comparison.amount - price, true, currency)}</span>}
+              {comparison?.label === "Bought separately" && <span className="bundle-comparison-note">vs. buying separately</span>}
               <small>{option.count === 1 ? "12 stencils included" : option.count === 2 ? "Free shipping + 1 gift" : "Free shipping + 2 gifts"}</small>
             </button>;
             })}
