@@ -196,8 +196,8 @@ function GiftPanel({bundle}: {bundle: (typeof bundles)[BundleIndex]}) {
   </fieldset>;
 }
 
-function Bag({cart, close, selectDuo, adjustCameras, removeItem, market, online}: {
-  cart: CartItem[]; close: () => void; selectDuo: () => void;
+function Bag({cart, close, selectDuo, adjustCameras, removeItem, market, online, upgradeColour}: {
+  cart: CartItem[]; close: () => void; selectDuo: () => void; upgradeColour: Colour;
   adjustCameras: (key: string, change: -1 | 1) => void;
   removeItem: (key: string) => void;
   market: Market | null; online: boolean;
@@ -210,6 +210,11 @@ function Bag({cart, close, selectDuo, adjustCameras, removeItem, market, online}
   const comparison = separately.some(amount => amount === null) ? null : separately.reduce<number>((sum, amount, index) => sum + (amount ?? 0) * cart[index].quantity, 0);
   const savings = comparison !== null && subtotal !== null ? Math.max(0, comparison - subtotal) : 0;
   const shippingIncluded = cart.some(item => bundles[item.bundle].freeShipping);
+  const single = shippingIncluded ? undefined : cart.find(item => item.bundle === 0);
+  const duo: Selection | null = single ? { bundle: 1, colours: [...single.colours, upgradeColour] } : null;
+  const singlePrice = single && (!online || market) ? marketPrice(market, single) : null;
+  const duoPrice = duo && (!online || market) ? marketPrice(market, duo) : null;
+  const upgradeAvailable = single && duo && singlePrice !== null && duoPrice !== null && duoPrice >= singlePrice && (!market || findVariant(market, duo)?.availableForSale);
 
   async function checkout() {
     if (!market) {
@@ -275,6 +280,12 @@ function Bag({cart, close, selectDuo, adjustCameras, removeItem, market, online}
       })}
     </ul>
     <div className="cart-footer">
+      {upgradeAvailable && <div className="cart-duo-upgrade">
+        <div><strong>Unlock free shipping with the Duo</strong><span>Add a {colours[upgradeColour].name} camera + a free cocoa & cinnamon refill kit.</span></div>
+        <button type="button" disabled={checkingOut} onClick={() => adjustCameras(selectionKey(single), 1)}>
+          Upgrade to Duo · +{money(duoPrice - singlePrice, true, currency)} <ArrowRight size={15} aria-hidden="true"/>
+        </button>
+      </div>}
       <div className="cart-subtotal">
         <div><span>Subtotal</span>{savings > 0 && <small>You save {money(savings, true, currency)}</small>}</div>
         <strong>{subtotal === null ? "Unavailable" : money(subtotal, false, currency)}</strong>
@@ -545,7 +556,7 @@ export default function Storefront() {
       <small>© DearLatte</small>
     </footer>
     {sticky && buyable && total !== null && <div className="sticky-buy"><div><b>The Latte Camera</b><span>{selected.name}</span></div><button className="cta" onClick={addToBag}>Add to Cart <span>{money(total, false, currency)}</span></button></div>}
-    {overlay === "cart" && <Overlay type="cart" title={"Your Bag (" + bagCount + ")"} close={close}><Bag cart={cart} adjustCameras={adjustCameras} removeItem={key => setCart(items => items.filter(item => selectionKey(item) !== key))} close={close} market={market} online={online} selectDuo={() => {
+    {overlay === "cart" && <Overlay type="cart" title={"Your Bag (" + bagCount + ")"} close={close}><Bag cart={cart} upgradeColour={finishes[1]} adjustCameras={adjustCameras} removeItem={key => setCart(items => items.filter(item => selectionKey(item) !== key))} close={close} market={market} online={online} selectDuo={() => {
       setBundle(1);
       close();
       requestAnimationFrame(() => document.getElementById("bundles")?.scrollIntoView({behavior: reduced ? "instant" : "smooth", block: "start"}));
