@@ -475,7 +475,7 @@ export default function Storefront() {
 
       <div className="editorial">
         <section id="how-it-works" className="story-block magic">
-          <Reveal className="story-image"><Photo name="press" alt="Cocoa powder falls from the Latte Camera onto a cappuccino"/></Reveal>
+          <Reveal className="story-image"><Photo name="holiday-cups" alt="Fresh lattes with a cocoa Christmas tree and holiday lettering"/></Reveal>
           <Reveal className="story-copy">
             <span className="eyebrow">The two-second trick</span>
             <h2>A Little Magic<br/> in Every Cup.</h2>
@@ -498,7 +498,7 @@ export default function Storefront() {
         </section>
 
         <section className="story-block stencils" id="latte-art">
-          <Reveal className="story-image"><Photo name="holiday-cups" alt="Fresh lattes with a cocoa Christmas tree and holiday lettering"/></Reveal>
+          <Reveal className="story-image"><Photo name="press" alt="The Latte Camera dusting a cocoa star onto a latte"/></Reveal>
           <Reveal className="story-copy">
             <span className="eyebrow">12 reusable stencils included</span>
             <h2>Twelve Ways to<br/> Make Someone’s Day.</h2>
