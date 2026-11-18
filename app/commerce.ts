@@ -45,9 +45,10 @@ export async function getCountries(signal: AbortSignal): Promise<Country[]> {
   return data.localization.availableCountries;
 }
 
-export function preferredCountry(countries: Country[], saved: string | null, languages: readonly string[]) {
+export function preferredCountry(countries: Country[], saved: string | null, languages: readonly string[], detected: string | null = null) {
   const available = new Set(countries.map(country => country.isoCode));
   if (saved && available.has(saved)) return saved;
+  if (detected && available.has(detected)) return detected;
   for (const language of languages) {
     try {
       const region = new Intl.Locale(language).region;

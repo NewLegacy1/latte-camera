@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowDown, ArrowRight, Camera, Check, ChevronLeft, ChevronRight, Coffee, Gift, LockKeyhole, Menu, Minus, Plus, Search, ShoppingBag, Sparkles, Star, Tag, Truck, X } from "lucide-react";
+import { ArrowDown, ArrowRight, Camera, Check, ChevronLeft, ChevronRight, Coffee, Gift, LockKeyhole, Menu, Minus, Plus, Search, ShoppingBag, Sparkles, Star, Truck, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { bundles, colours, defaultColours, faq, gallery, gifts, info, money, readCart, reviews, selectionKey, type Review, type BundleIndex, type CartItem, type Colour, type Selection } from "./catalog";
@@ -328,8 +328,6 @@ export default function Storefront() {
   const currency = market?.country.currency.isoCode ?? "CAD";
   const selection: Selection = { bundle, colours: finishes.slice(0, selected.count) };
   const total = online && !market ? null : marketPrice(market, selection);
-  const compareAt = cameraComparison(market, selection);
-  const saved = total === null || compareAt === null ? 0 : compareAt - total;
   const buyable = total !== null && (!market || Boolean(findVariant(market, selection)?.availableForSale));
   const bagCount = cart.reduce((sum, row) => sum + bundles[row.bundle].count * row.quantity, 0);
 
@@ -415,6 +413,7 @@ export default function Storefront() {
         <a className="wordmark" href="#top" aria-label="DearLatte home"><Photo name="logo" alt="DearLatte" art/></a>
         <nav className="desktop-nav" aria-label="Main navigation">{links.slice(0, 4).map(link => <a href={link.href} key={link.href}>{link.label}</a>)}</nav>
         <div className="nav-actions">
+          <button className="icon-btn desktop-menu" onClick={() => setOverlay("menu")} aria-label="Open menu"><Menu size={21}/></button>
           <button className="icon-btn" aria-label="Search" onClick={() => setOverlay("search")}><Search size={21}/></button>
           <button className="icon-btn nav-bag" aria-label={"Shopping bag, " + bagCount + " cameras"} onClick={() => setOverlay("cart")}><ShoppingBag size={21}/><span aria-hidden="true">{bagCount}</span></button>
         </div>
@@ -435,17 +434,6 @@ export default function Storefront() {
             <li><Camera size={15}/> 12 reusable designs</li>
             <li><Sparkles size={15}/> Ready in seconds</li>
           </ul>
-          <div className="price-row" aria-live="polite">
-            <AnimatePresence initial={false} mode="popLayout">
-              <motion.strong key={total ?? "pending"} initial={reduced ? false : {opacity: 0, y: 3}} animate={{opacity: 1, y: 0}} exit={reduced ? undefined : {opacity: 0}} transition={{duration: 0.18}}>{total === null ? (online && !market && !error ? "Loading price…" : "Price unavailable") : money(total, true, currency)}</motion.strong>
-            </AnimatePresence>
-            {saved > 0 && <><s aria-label="Price if bought separately">{money(compareAt!, true, currency)}</s><span className="save"><Tag size={13}/> Save {money(saved, true, currency)}</span></>}
-          </div>
-          {(countries.length > 0 || online) && <div className="market-line">
-            {countries.length ? <label>Ship to <select aria-label="Shipping country" value={country} onChange={event => changeCountry(event.target.value)}>
-              {countries.map(option => <option key={option.isoCode} value={option.isoCode}>{option.name} · {option.currency.isoCode}</option>)}
-            </select></label> : <span>{error ? "Market pricing unavailable" : "Finding your market."}</span>}
-          </div>}
           <div className="section-heading" id="bundles"><h2>Bundle &amp; Save</h2><span>Mix and match colours</span></div>
           <div className="bundle-grid" role="group" aria-label="Choose a camera bundle">
             {bundles.map((option, i) => {
@@ -561,7 +549,7 @@ export default function Storefront() {
       close();
       requestAnimationFrame(() => document.getElementById("bundles")?.scrollIntoView({behavior: reduced ? "instant" : "smooth", block: "start"}));
     }}/></Overlay>}
-    {overlay === "menu" && <Overlay type="menu" title="Menu" close={close}><nav className="dialog-links" aria-label="Mobile navigation">{links.map(link => <a key={link.href} href={link.href} onClick={close}>{link.label}<ArrowRight size={17}/></a>)}</nav></Overlay>}
+    {overlay === "menu" && <Overlay type="menu" title="Menu" close={close}><nav className="dialog-links" aria-label="Mobile navigation">{links.map(link => <a key={link.href} href={link.href} onClick={close}>{link.label}<ArrowRight size={17}/></a>)}</nav><div className="menu-market">{countries.length ? <label>Ship to<select aria-label="Shipping country and currency" value={country} onChange={event => changeCountry(event.target.value)}>{countries.map(option => <option key={option.isoCode} value={option.isoCode}>{option.name} · {option.currency.isoCode}</option>)}</select></label> : online && <p role="status">{error ? "Market pricing unavailable" : "Finding your market…"}</p>}</div></Overlay>}
     {overlay === "search" && <Overlay type="search" title="Search" close={close}><SearchCatalog close={close}/></Overlay>}
   </>;
 }

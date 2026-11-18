@@ -15,10 +15,17 @@ export function useShopifyMarket() {
   useEffect(() => {
     if (!online) return;
     const controller = new AbortController();
-    getCountries(controller.signal).then(options => {
+    Promise.all([
+      getCountries(controller.signal),
+      fetch("/api/visitor-country/", { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(2500)]), cache: "no-store" })
+        .then(response => response.ok ? response.json() : null)
+        .then((location: { country?: string } | null) => location?.country ?? null)
+        .catch(() => null),
+    ]).then(([options, detected]) => {
+      if (controller.signal.aborted) return;
       let saved: string | null = null;
       try { saved = localStorage.getItem(key); } catch {}
-      const selected = preferredCountry(options, saved, navigator.languages);
+      const selected = preferredCountry(options, saved, navigator.languages, detected);
       if (!selected) throw new Error("No shipping markets are available.");
       setCountries(options);
       setCountry(selected);
