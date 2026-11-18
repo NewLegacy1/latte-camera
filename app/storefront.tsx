@@ -280,7 +280,7 @@ function Bag({cart, close, selectDuo, adjustCameras, removeItem, market, online}
         <strong>{subtotal === null ? "Unavailable" : money(subtotal, false, currency)}</strong>
       </div>
       <button className="cta" onClick={checkout} disabled={checkingOut || subtotal === null}>
-        <LockKeyhole size={17} aria-hidden="true"/>{checkingOut ? "Opening checkout…" : "Secure checkout"}<ArrowRight size={18} aria-hidden="true"/>
+        <LockKeyhole size={17} aria-hidden="true"/>{checkingOut ? "Opening checkout…" : "Review Order"}<ArrowRight size={18} aria-hidden="true"/>
       </button>
       <p role="status">{message || (market ? "Taxes and delivery confirmed at checkout" : online ? "" : "Checkout preview")}</p>
     </div>
