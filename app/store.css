@@ -160,3 +160,7 @@ h1{font-size:clamp(42px,11.05vw,70px);line-height:1}
 .cart-footer p{text-align:center}
 
 .stencil-inclusion{display:flex;align-items:center;gap:7px;margin:12px 0 0;padding:8px 10px;border-radius:8px;background:#f1eae0;color:#35240f;font-size:12px;line-height:1.35}.stencil-inclusion svg{color:#80592e;flex-shrink:0}
+
+.marketing-preferences { position: fixed; z-index: 100; bottom: 16px; left: 16px; width: min(320px, calc(100vw - 32px)); padding: 16px; border: 1px solid #bba88d; background: #fffaf2; color: #352318; border-radius: 12px; box-shadow: 0 4px 24px #35231833; text-align: left; }
+.marketing-preferences div { display: flex; gap: 8px; margin-top: 12px; }
+.marketing-preferences button { padding: 6px 12px; border: 1px solid currentColor; border-radius: 6px; }

@@ -5,6 +5,8 @@ import { ArrowDown, ArrowRight, Camera, Check, ChevronLeft, ChevronRight, Coffee
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { bundles, colours, defaultColours, faq, gallery, gifts, info, money, readCart, reviews, selectionKey, type Review, type BundleIndex, type CartItem, type Colour, type Selection } from "./catalog";
+import MarketingPreferences from "./marketing-preferences";
+import { marketingPreference, trackMeta } from "./meta";
 import { cameraComparison, cartAmount, findVariant, goToCheckout, marketPrice, type Market } from "./commerce";
 import { useShopifyMarket } from "./use-shopify-market";
 import { NextDispatch, SaleBanner } from "./offer-timing";
@@ -333,12 +335,26 @@ export default function Storefront() {
     return () => observer.disconnect();
   }, []);
 
+  const viewedProduct = useRef(false);
+  const variantId = market && findVariant(market, selection)?.id.split("/").pop();
+  useEffect(() => {
+    function viewProduct() {
+      if (viewedProduct.current || !variantId || total === null || localStorage.getItem(marketingPreference) !== "yes") return;
+      viewedProduct.current = true;
+      trackMeta("ViewContent", { content_ids: [variantId], content_type: "product", value: total / 100, currency });
+    }
+    viewProduct();
+    window.addEventListener(marketingPreference, viewProduct);
+    return () => window.removeEventListener(marketingPreference, viewProduct);
+  }, [variantId, total, currency]);
+
   function addToBag() {
     if (!buyable) return;
     const key = selectionKey(selection);
     setCart(items => items.some(item => selectionKey(item) === key)
       ? items.map(item => selectionKey(item) === key ? {...item, quantity: item.quantity + 1} : item)
       : [...items, {...selection, quantity: 1}]);
+    if (variantId && total !== null) trackMeta("AddToCart", { content_ids: [variantId], content_type: "product", value: total / 100, currency, num_items: 1 });
     setAdded(true);
     setOverlay("cart");
     if (feedback.current) clearTimeout(feedback.current);
