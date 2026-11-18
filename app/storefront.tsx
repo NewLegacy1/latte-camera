@@ -440,6 +440,7 @@ export default function Storefront() {
               const price = online && !market ? null : marketPrice(market, {bundle: i as BundleIndex, colours: finishes.slice(0, option.count)});
               return <button type="button" key={option.count} className="bundle-card" aria-pressed={bundle === i} onClick={() => setBundle(i as BundleIndex)}>
               {"popular" in option && <span className="popular">Most Popular</span>}
+              {option.count === 3 && <span className="popular best-value">Best Value</span>}
               <BundleArt finish={option.finishes}/>
               <span className="bundle-name">{option.name}</span>
               <strong>{price === null ? "—" : money(price, true, currency)}</strong>

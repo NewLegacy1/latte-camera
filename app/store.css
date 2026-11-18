@@ -87,7 +87,7 @@ h1{font-size:clamp(42px,11.05vw,70px);line-height:1}
 @media(min-width:760px){.step-media img{aspect-ratio:1.11}.step-media button{font-size:11px;padding:8px 11px}}
 
 /* Promotion and order timing */
-.sale-banner{min-height:42px;display:flex;align-items:center;justify-content:center;gap:clamp(9px,2.8vw,30px);padding:6px 10px;background:linear-gradient(105deg,#3a1818,#612b29 55%,#3e1b19);color:#fff6e8;border-bottom:1px solid #9d6945}
+.sale-banner{min-height:42px;display:flex;align-items:center;justify-content:center;gap:clamp(9px,2.8vw,30px);padding:6px 10px;background:var(--sale-gradient);color:#fff6e8;border-bottom:1px solid #9d6945}
 .sale-message{display:flex;align-items:center;gap:6px;line-height:1.1;text-decoration:none}
 .sale-message strong{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(14px,4.2vw,19px);white-space:nowrap;letter-spacing:.03em}
 .sale-message>span:last-child{font-size:9px;color:#f0d6b2;white-space:nowrap;font-weight:700}
@@ -183,3 +183,6 @@ h1{font-size:clamp(42px,11.05vw,70px);line-height:1}
 
 .desktop-menu{display:none}.menu-market{padding:20px;border-top:1px solid var(--line);font-size:13px}.menu-market label{display:grid;gap:10px;font-weight:700}.menu-market select{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--ivory);color:var(--espresso);font:inherit}
 @media(min-width:1000px){.desktop-menu{display:inline-grid}}
+
+:root{--sale-gradient:linear-gradient(105deg,#3a1818,#612b29 55%,#3e1b19)}
+.main-buy,.sticky-buy .cta{background:var(--sale-gradient);border-color:#612b29;transition:filter .2s,transform .2s}.main-buy:hover,.sticky-buy .cta:hover{background:var(--sale-gradient);filter:brightness(1.12)}.main-buy span:nth-child(2){background:#ffffff1c}.popular.best-value{background:#4f6548;color:#fffaf3}
