@@ -1,3 +1,5 @@
+const { isIP } = require("node:net");
+
 const eventNames = new Set(["PageView", "ViewContent", "AddToCart", "InitiateCheckout"]);
 const productionOrigin = "https://dearlatte.shop";
 
@@ -34,6 +36,8 @@ async function forwardEvent(request) {
   if (!userAgent) return new Response(null, { status: 400 });
   const cookies = request.headers.get("cookie") ?? "";
   const userData = { client_user_agent: userAgent };
+  const clientIp = request.headers.get("x-vercel-forwarded-for")?.split(",")[0].trim();
+  if (clientIp && isIP(clientIp)) userData.client_ip_address = clientIp;
   for (const key of ["fbp", "fbc"]) {
     const value = cookies.match(new RegExp("(?:^|; *)_" + key + "=([a-zA-Z0-9_.-]{1,350})(?:;|$)"))?.[1];
     if (value) userData[key] = value;
@@ -50,8 +54,14 @@ async function forwardEvent(request) {
       }], test_event_code: process.env.DEARLATTE_META_TEST_EVENT_CODE }),
       signal: AbortSignal.timeout(4500),
     });
-    return new Response(null, { status: result.ok ? 204 : 502 });
+    if (!result.ok) {
+      const error = (await result.json().catch(() => null))?.error;
+      console.warn("Meta rejected event", { status: result.status, code: error?.code, subcode: error?.error_subcode });
+      return new Response(null, { status: 502 });
+    }
+    return new Response(null, { status: 204 });
   } catch {
+    console.warn("Meta event request failed");
     return new Response(null, { status: 502 });
   }
 }
