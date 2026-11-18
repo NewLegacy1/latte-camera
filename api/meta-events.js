@@ -1,9 +1,7 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
-
 const eventNames = new Set(["PageView", "ViewContent", "AddToCart", "InitiateCheckout"]);
 const productionOrigin = "https://dearlatte.shop";
 
-async function forwardEvent(request: Request) {
+async function forwardEvent(request) {
   const token = process.env.DEARLATTE_META_CAPI_ACCESS_TOKEN;
   const version = process.env.DEARLATTE_META_GRAPH_API_VERSION;
   const pixel = process.env.NEXT_PUBLIC_DEARLATTE_META_PIXEL_ID;
@@ -22,9 +20,9 @@ async function forwardEvent(request: Request) {
     return new Response(null, { status: 400 });
   }
   const data = input.data ?? {};
-  const customData: Record<string, unknown> = {};
+  const customData = {};
   if (Array.isArray(data.content_ids)) {
-    customData.content_ids = data.content_ids.filter((id: unknown) => typeof id === "string" && /^\d{1,25}$/.test(id)).slice(0, 100);
+    customData.content_ids = data.content_ids.filter((id) => typeof id === "string" && /^\d{1,25}$/.test(id)).slice(0, 100);
     customData.content_type = "product";
   }
   if (Number.isFinite(data.value) && data.value >= 0 && /^[A-Z]{3}$/.test(data.currency)) {
@@ -35,7 +33,7 @@ async function forwardEvent(request: Request) {
   const userAgent = request.headers.get("user-agent");
   if (!userAgent) return new Response(null, { status: 400 });
   const cookies = request.headers.get("cookie") ?? "";
-  const userData: Record<string, string> = { client_user_agent: userAgent };
+  const userData = { client_user_agent: userAgent };
   for (const key of ["fbp", "fbc"]) {
     const value = cookies.match(new RegExp("(?:^|; *)_" + key + "=([a-zA-Z0-9_.-]{1,350})(?:;|$)"))?.[1];
     if (value) userData[key] = value;
@@ -58,7 +56,7 @@ async function forwardEvent(request: Request) {
   }
 }
 
-export default async function handler(request: IncomingMessage & { body?: unknown }, response: ServerResponse) {
+module.exports = async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     response.writeHead(405).end();
@@ -77,7 +75,7 @@ export default async function handler(request: IncomingMessage & { body?: unknow
     let body = typeof suppliedBody === "string" ? suppliedBody : JSON.stringify(suppliedBody);
     if (body === undefined) {
       let size = 0;
-      const chunks: Buffer[] = [];
+      const chunks = [];
       for await (const chunk of request) {
         const bytes = Buffer.from(chunk);
         size += bytes.length;
@@ -94,4 +92,4 @@ export default async function handler(request: IncomingMessage & { body?: unknow
   } catch {
     response.writeHead(400).end();
   }
-}
+};
