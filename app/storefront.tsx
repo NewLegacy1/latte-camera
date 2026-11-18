@@ -529,6 +529,7 @@ export default function Storefront() {
     <footer className="site-footer">
       <a className="wordmark" href="#top" aria-label="DearLatte home"><Photo name="logo" alt="DearLatte" art/></a>
       <nav aria-label="Footer navigation">{links.map(link => <a href={link.href} key={link.href}>{link.label}</a>)}</nav>
+      <MarketingPreferences />
       <small>© DearLatte</small>
     </footer>
     {sticky && buyable && total !== null && <div className="sticky-buy"><div><b>The Latte Camera</b><span>{selected.name}</span></div><button className="cta" onClick={addToBag}>Add to Cart <span>{money(total, false, currency)}</span></button></div>}
