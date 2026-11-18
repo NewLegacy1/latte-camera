@@ -2,9 +2,9 @@ const eventNames = new Set(["PageView", "ViewContent", "AddToCart", "InitiateChe
 const productionOrigin = "https://dearlatte.shop";
 
 export async function POST(request: Request) {
-  const token = process.env.META_CAPI_ACCESS_TOKEN;
-  const version = process.env.META_GRAPH_API_VERSION;
-  const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const token = process.env.DEARLATTE_META_CAPI_ACCESS_TOKEN;
+  const version = process.env.DEARLATTE_META_GRAPH_API_VERSION;
+  const pixel = process.env.NEXT_PUBLIC_DEARLATTE_META_PIXEL_ID;
   if (!token || !version || !/^v\d+\.0$/.test(version) || !pixel || !/^\d+$/.test(pixel)) {
     return new Response(null, { status: 503 });
   }
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         event_name: input.name, event_id: input.id, event_time: Math.floor(Date.now() / 1000),
         action_source: "website", event_source_url: productionOrigin + path, user_data: userData,
         custom_data: customData,
-      }], test_event_code: process.env.META_TEST_EVENT_CODE }),
+      }], test_event_code: process.env.DEARLATTE_META_TEST_EVENT_CODE }),
       signal: AbortSignal.timeout(4500),
     });
     return new Response(null, { status: result.ok ? 204 : 502 });

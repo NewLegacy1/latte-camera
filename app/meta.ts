@@ -1,6 +1,6 @@
 "use client";
 
-const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+const pixelId = process.env.NEXT_PUBLIC_DEARLATTE_META_PIXEL_ID;
 export const metaEnabled = Boolean(pixelId && /^\d+$/.test(pixelId));
 export const marketingPreference = "dearlatte-marketing";
 type EventName = "PageView" | "ViewContent" | "AddToCart" | "InitiateCheckout";
