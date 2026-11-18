@@ -170,17 +170,29 @@ function ReviewCard({review, featured = false}: {review: Review; featured?: bool
 }
 
 function GiftPanel({bundle}: {bundle: (typeof bundles)[BundleIndex]}) {
-  if (!bundle.gifts.length) return null;
+  const giftKeys = ["refill", "frother"] as const;
   return <fieldset className="gift-panel">
-    <legend><Gift size={14} aria-hidden="true"/> Gifts unlocked</legend>
+    <legend><Gift size={14} aria-hidden="true"/> Bundle gifts</legend>
     <div className="gift-tiles">
-      {bundle.gifts.map((key, index) => <div className="gift-tile" key={key}>
-        {index > 0 && <span className="gift-plus" aria-hidden="true"><Plus size={12}/></span>}
-        <div className="gift-photo"><Photo name={gifts[key].image} alt="" art/></div>
-        <div className="gift-caption"><strong>{gifts[key].name}</strong><span>Free gift</span></div>
-      </div>)}
+      {giftKeys.map((key, index) => {
+        const unlocked = bundle.gifts.some(gift => gift === key);
+        return <div className={"gift-tile" + (unlocked ? "" : " gift-locked")} key={key}>
+          {index > 0 && <span className="gift-plus" aria-hidden="true"><Plus size={12}/></span>}
+          <div className="gift-photo">
+            <Photo name={gifts[key].image} alt="" art/>
+            <span className="gift-lock" aria-hidden="true"><LockKeyhole size={18}/></span>
+          </div>
+          <div className="gift-caption">
+            <strong>{gifts[key].name}</strong>
+            <span>{unlocked ? "Free gift" : key === "refill" ? "Unlock with 2 cameras" : "Unlock with 3 cameras"}</span>
+          </div>
+        </div>;
+      })}
     </div>
-    <div className="gift-shipping"><Truck size={15} aria-hidden="true"/> Free standard shipping included</div>
+    <div className={"gift-shipping" + (bundle.freeShipping ? "" : " gift-shipping-locked")}>
+      {bundle.freeShipping ? <Truck size={15} aria-hidden="true"/> : <LockKeyhole size={15} aria-hidden="true"/>}
+      {bundle.freeShipping ? "Free standard shipping included" : "Free shipping unlocks with 2 cameras"}
+    </div>
   </fieldset>;
 }
 

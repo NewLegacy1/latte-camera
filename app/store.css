@@ -164,3 +164,15 @@ h1{font-size:clamp(42px,11.05vw,70px);line-height:1}
 .marketing-preferences { position: fixed; z-index: 100; bottom: 16px; left: 16px; width: min(320px, calc(100vw - 32px)); padding: 16px; border: 1px solid #bba88d; background: #fffaf2; color: #352318; border-radius: 12px; box-shadow: 0 4px 24px #35231833; text-align: left; }
 .marketing-preferences div { display: flex; gap: 8px; margin-top: 12px; }
 .marketing-preferences button { padding: 6px 12px; border: 1px solid currentColor; border-radius: 6px; }
+
+.gift-photo{position:relative;overflow:visible}
+.gift-photo img{transition:filter .45s ease,opacity .45s ease;filter:blur(0);opacity:1}
+.gift-lock{position:absolute;inset:0;display:grid;place-items:center;color:#694522;opacity:0;transform:scale(.85);transition:opacity .3s ease,transform .4s ease;pointer-events:none}
+.gift-lock svg{box-sizing:content-box;padding:7px;border:1px solid #cfb590;border-radius:50%;background:#fffaf2e8;box-shadow:0 2px 8px #69452218}
+.gift-locked .gift-photo img{filter:blur(4px);opacity:.4}
+.gift-locked .gift-lock{opacity:1;transform:scale(1)}
+.gift-caption span{transition:background-color .4s ease,color .4s ease;min-height:17px;display:flex;align-items:center}
+.gift-locked .gift-caption span{background:#eee4d5;color:#705b43}
+.gift-shipping{min-height:29px;transition:background-color .4s ease,color .4s ease}
+.gift-shipping-locked{background:#eee8de;color:#786b5a}
+@media(prefers-reduced-motion:reduce){.gift-photo img,.gift-lock,.gift-caption span,.gift-shipping{transition:none}}
