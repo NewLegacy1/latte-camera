@@ -445,10 +445,8 @@ export default function Storefront() {
               {option.count === 3 && <span className="popular best-value">Best Value</span>}
               <BundleArt finish={option.finishes}/>
               <span className="bundle-name">{option.name}</span>
-              <span className="bundle-sale-label">Black Friday price</span>
               <div className="bundle-offer-price">{comparison && <s aria-label={comparison.label}>{money(comparison.amount, true, currency)}</s>}<strong>{price === null ? "—" : money(price, true, currency)}</strong></div>
               {comparison && price !== null && <span className="bundle-saving">Save {money(comparison.amount - price, true, currency)}</span>}
-              {comparison?.label === "Bought separately" && <span className="bundle-comparison-note">vs. buying separately</span>}
               <small>{option.count === 1 ? "12 stencils included" : option.count === 2 ? "Free shipping + 1 gift" : "Free shipping + 2 gifts"}</small>
             </button>;
             })}
