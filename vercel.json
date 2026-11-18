@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/2026-10/graphql.json",
+      "destination": "/api/shopify?shopifyPath=/api/2026-10/graphql.json"
+    },
+    {
+      "source": "/__shopify/:path*",
+      "destination": "/api/shopify?shopifyPath=/__shopify/:path*"
+    }
+  ]
+}

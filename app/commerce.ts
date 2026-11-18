@@ -25,7 +25,7 @@ const apiVersion = "2026-10";
 
 async function request<T>(query: string, variables: Record<string, unknown>, signal?: AbortSignal): Promise<T> {
   if (!token) throw new Error("Shopify pricing is unavailable.");
-  const response = await fetch("https://" + shop + "/api/" + apiVersion + "/graphql.json", {
+  const response = await fetch("/api/" + apiVersion + "/graphql.json", {
     method: "POST",
     headers: { "content-type": "application/json", "X-Shopify-Storefront-Access-Token": token },
     body: JSON.stringify({ query, variables }),
