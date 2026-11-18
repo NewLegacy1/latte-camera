@@ -44,10 +44,10 @@ export function readCart(value: string | null): CartItem[] {
 
 export const gallery = [
   { image: "hero", alt: "Sage Green Latte Camera beside a cappuccino with a cocoa heart", label: "The Latte Camera" },
+  { image: "cups", alt: "Five decorated lattes alongside a Sage Green Latte Camera", label: "The finished cups" },
   { image: "press", alt: "A hand presses the Latte Camera as cocoa falls onto the foam", label: "The cocoa press" },
   { image: "holiday-camera", alt: "Cream White Latte Camera with four holiday and everyday stencils", label: "Cream White camera and stencils" },
   { image: "stencil-demo", alt: "Sliding a bulldog stencil into a Cream White Latte Camera", label: "Sliding in a stencil" },
-  { image: "cups", alt: "Five decorated lattes alongside a Sage Green Latte Camera", label: "The finished cups" },
   { image: "kit", alt: "The Latte Camera and stencils arranged together", label: "Camera and stencils" },
   { image: "gift", alt: "A Sage Green Latte Camera in a tissue-lined gift box", label: "Gifting inspiration" },
 ] as const;
