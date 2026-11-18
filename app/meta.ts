@@ -36,8 +36,8 @@ export function trackMeta(name: EventName, data: EventData = {}) {
   target.fbq?.("trackSingle", pixelId, name, data, { eventID: id });
   const payload = JSON.stringify({ name, id, data, path: location.pathname });
   const body = new Blob([payload], { type: "application/json" });
-  if (!navigator.sendBeacon?.("/api/meta-events", body)) {
-    void fetch("/api/meta-events", { method: "POST", body, keepalive: true }).catch(() => {});
+  if (!navigator.sendBeacon?.("/api/meta-events/", body)) {
+    void fetch("/api/meta-events/", { method: "POST", body, keepalive: true }).catch(() => {});
   }
 }
 

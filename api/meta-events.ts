@@ -1,7 +1,9 @@
+import type { IncomingMessage, ServerResponse } from "node:http";
+
 const eventNames = new Set(["PageView", "ViewContent", "AddToCart", "InitiateCheckout"]);
 const productionOrigin = "https://dearlatte.shop";
 
-export async function POST(request: Request) {
+async function forwardEvent(request: Request) {
   const token = process.env.DEARLATTE_META_CAPI_ACCESS_TOKEN;
   const version = process.env.DEARLATTE_META_GRAPH_API_VERSION;
   const pixel = process.env.NEXT_PUBLIC_DEARLATTE_META_PIXEL_ID;
@@ -53,5 +55,43 @@ export async function POST(request: Request) {
     return new Response(null, { status: result.ok ? 204 : 502 });
   } catch {
     return new Response(null, { status: 502 });
+  }
+}
+
+export default async function handler(request: IncomingMessage & { body?: unknown }, response: ServerResponse) {
+  if (request.method !== "POST") {
+    response.setHeader("Allow", "POST");
+    response.writeHead(405).end();
+    return;
+  }
+  if (Number(request.headers["content-length"]) > 4096) {
+    response.writeHead(413).end();
+    return;
+  }
+  try {
+    const headers = new Headers();
+    for (const [name, value] of Object.entries(request.headers)) {
+      if (typeof value === "string") headers.set(name, value);
+    }
+    const suppliedBody = request.body;
+    let body = typeof suppliedBody === "string" ? suppliedBody : JSON.stringify(suppliedBody);
+    if (body === undefined) {
+      let size = 0;
+      const chunks: Buffer[] = [];
+      for await (const chunk of request) {
+        const bytes = Buffer.from(chunk);
+        size += bytes.length;
+        if (size > 4096) {
+          response.writeHead(413).end();
+          return;
+        }
+        chunks.push(bytes);
+      }
+      body = Buffer.concat(chunks).toString("utf8");
+    }
+    const result = await forwardEvent(new Request(productionOrigin + "/api/meta-events/", { method: "POST", headers, body }));
+    response.writeHead(result.status).end();
+  } catch {
+    response.writeHead(400).end();
   }
 }
