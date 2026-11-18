@@ -1,6 +1,6 @@
 const { isIP } = require("node:net");
 
-const eventNames = new Set(["PageView", "ViewContent", "AddToCart", "InitiateCheckout"]);
+const eventNames = new Set(["PageView", "ViewContent", "AddToCart"]);
 const productionOrigin = "https://dearlatte.shop";
 
 async function forwardEvent(request) {

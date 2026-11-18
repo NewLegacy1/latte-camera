@@ -3,7 +3,7 @@
 const pixelId = process.env.NEXT_PUBLIC_DEARLATTE_META_PIXEL_ID;
 export const metaEnabled = Boolean(pixelId && /^\d+$/.test(pixelId));
 export const marketingPreference = "dearlatte-marketing";
-type EventName = "PageView" | "ViewContent" | "AddToCart" | "InitiateCheckout";
+type EventName = "PageView" | "ViewContent" | "AddToCart";
 type EventData = { content_ids?: string[]; value?: number; currency?: string; num_items?: number; content_type?: "product" };
 type Pixel = ((...args: unknown[]) => void) & { callMethod?: (...args: unknown[]) => void; queue: unknown[][]; push?: Pixel; loaded?: boolean; version?: string };
 const browser = () => window as Window & { fbq?: Pixel; _fbq?: Pixel };

@@ -1,4 +1,3 @@
-import { trackMeta } from "./meta";
 import { bundles, colours, type BundleIndex, type CartItem, type Selection } from "./catalog";
 
 const shop = "mnhkb0-af.myshopify.com";
@@ -173,14 +172,5 @@ export async function goToCheckout(items: CartItem[], market: Market) {
   if (url.protocol !== "https:" || url.username || url.password) {
     throw new Error("Checkout returned an unexpected address.");
   }
-  try {
-    trackMeta("InitiateCheckout", {
-      content_ids: Array.from(booked.keys(), id => id.split("/").pop() ?? id),
-      content_type: "product",
-      currency: subtotal.currencyCode,
-      value: Number(subtotal.amount),
-      num_items: Array.from(booked.values()).reduce((count, quantity) => count + quantity, 0),
-    });
-  } catch { /* Tracking must not interrupt checkout. */ }
   window.location.assign(url.href);
 }
