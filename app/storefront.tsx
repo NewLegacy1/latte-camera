@@ -5,8 +5,7 @@ import { ArrowDown, ArrowRight, Camera, Check, ChevronLeft, ChevronRight, Coffee
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { bundles, colours, defaultColours, faq, gallery, gifts, info, money, readCart, reviews, selectionKey, type Review, type BundleIndex, type CartItem, type Colour, type Selection } from "./catalog";
-import MarketingPreferences from "./marketing-preferences";
-import { marketingPreference, trackMeta } from "./meta";
+import { trackMeta, trackMetaPage } from "./meta";
 import { cameraComparison, saleComparison, cartAmount, findVariant, goToCheckout, marketPrice, type Market } from "./commerce";
 import { useShopifyMarket } from "./use-shopify-market";
 import { NextDispatch, SaleBanner } from "./offer-timing";
@@ -336,6 +335,7 @@ export default function Storefront() {
     setHydrated(true);
     return () => { if (feedback.current) clearTimeout(feedback.current); };
   }, []);
+  useEffect(() => { trackMetaPage(); }, []);
   useEffect(() => {
     if (hydrated) {
       try { localStorage.setItem("dearlatte-cart-v2", JSON.stringify(cart)); } catch {}
@@ -360,13 +360,11 @@ export default function Storefront() {
   const variantId = market && findVariant(market, selection)?.id.split("/").pop();
   useEffect(() => {
     function viewProduct() {
-      if (viewedProduct.current || !variantId || total === null || localStorage.getItem(marketingPreference) !== "yes") return;
+      if (viewedProduct.current || !variantId || total === null) return;
       viewedProduct.current = true;
       trackMeta("ViewContent", { content_ids: [variantId], content_type: "product", value: total / 100, currency });
     }
     viewProduct();
-    window.addEventListener(marketingPreference, viewProduct);
-    return () => window.removeEventListener(marketingPreference, viewProduct);
   }, [variantId, total, currency]);
 
   function addToBag() {
@@ -544,7 +542,6 @@ export default function Storefront() {
     <footer className="site-footer">
       <a className="wordmark" href="#top" aria-label="DearLatte home"><Photo name="logo" alt="DearLatte" art/></a>
       <nav aria-label="Footer navigation">{links.map(link => <a href={link.href} key={link.href}>{link.label}</a>)}</nav>
-      <MarketingPreferences />
       <small>© DearLatte</small>
     </footer>
     {sticky && buyable && total !== null && <div className="sticky-buy"><div><b>The Latte Camera</b><span>{selected.name}</span></div><button className="cta" onClick={addToBag}>Add to Cart <span>{money(total, false, currency)}</span></button></div>}

@@ -2,7 +2,6 @@
 
 const pixelId = process.env.NEXT_PUBLIC_DEARLATTE_META_PIXEL_ID;
 export const metaEnabled = Boolean(pixelId && /^\d+$/.test(pixelId));
-export const marketingPreference = "dearlatte-marketing";
 type EventName = "PageView" | "ViewContent" | "AddToCart";
 type EventData = { content_ids?: string[]; value?: number; currency?: string; num_items?: number; content_type?: "product" };
 type Pixel = ((...args: unknown[]) => void) & { callMethod?: (...args: unknown[]) => void; queue: unknown[][]; push?: Pixel; loaded?: boolean; version?: string };
@@ -11,7 +10,7 @@ let initialized = false;
 let viewed = false;
 
 export function trackMeta(name: EventName, data: EventData = {}) {
-  if (!metaEnabled || localStorage.getItem(marketingPreference) !== "yes") return;
+  if (!metaEnabled) return;
   const target = browser();
   if (!initialized) {
     if (!target.fbq) {
@@ -42,16 +41,7 @@ export function trackMeta(name: EventName, data: EventData = {}) {
 }
 
 export function trackMetaPage() {
-  if (viewed || localStorage.getItem(marketingPreference) !== "yes") return;
+  if (viewed) return;
   viewed = true;
   trackMeta("PageView");
-}
-
-export function setMetaPreference(allowed: boolean) {
-  localStorage.setItem(marketingPreference, allowed ? "yes" : "no");
-  browser().fbq?.("consent", allowed ? "grant" : "revoke");
-  if (allowed) {
-    window.dispatchEvent(new Event(marketingPreference));
-    trackMetaPage();
-  }
 }
