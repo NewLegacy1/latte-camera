@@ -135,7 +135,13 @@ export function metaAttribution() {
   return { fbp: readCookie("_fbp"), fbc, fbclid };
 }
 
-/** Carries this page's utm_* (or the landing page's) onto the checkout link, so Ownlane can still attribute it. */
+/** The click id inside a _fbc cookie value (`fb.1.<timestamp>.<fbclid>`). */
+function fbclidFromFbc(fbc: string) {
+  const parts = fbc.split(".");
+  return parts.length >= 3 ? parts.slice(2).join(".") : "";
+}
+
+/** Carries this page's utm_* (or the landing page's) onto the checkout link, so the checkout can still attribute it. Also carries fbclid: without it the Meta click id is lost on the redirect to the Shopify checkout, the checkout pixel never sets _fbc, and the Purchase can't be attributed to the ad. */
 export function checkoutUrl(raw: string) {
   const url = new URL(raw, window.location.origin);
   const live = new URLSearchParams(window.location.search);
@@ -147,6 +153,10 @@ export function checkoutUrl(raw: string) {
     const value = live.get(key) || landing.get(key);
     if (value && !url.searchParams.get(key)) url.searchParams.set(key, value);
   });
+  if (!url.searchParams.get("fbclid")) {
+    const fbclid = live.get("fbclid") || fbclidFromFbc(metaAttribution().fbc);
+    if (fbclid) url.searchParams.set("fbclid", fbclid);
+  }
   return url.toString();
 }
 
