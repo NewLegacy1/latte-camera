@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowDown, ArrowRight, Camera, Check, ChevronLeft, ChevronRight, Coffee, Gift, LockKeyhole, Menu, Minus, Plus, Search, ShoppingBag, Sparkles, Star, Truck, X } from "lucide-react";
+import { ArrowDown, ArrowRight, Camera, Check, ChevronLeft, ChevronRight, Coffee, Gift, LockKeyhole, Menu, Minus, Plus, Search, ShieldCheck, ShoppingBag, Sparkles, Star, Truck, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { bundles, colours, defaultColours, faq, gallery, gifts, info, money, readCart, reviews, selectionKey, type Review, type BundleIndex, type CartItem, type Colour, type Selection } from "./catalog";
 import { trackMeta, trackMetaPage } from "./meta";
 import { cameraComparison, saleComparison, cartAmount, findVariant, goToCheckout, marketPrice, type Market } from "./commerce";
 import { useShopifyMarket } from "./use-shopify-market";
-import { NextDispatch, SaleBanner } from "./offer-timing";
+import BuyAssurance from "./buy-assurance";
+import { SaleBanner } from "./offer-timing";
 
 const responsivePhotos = ["hero", "press", "steps", "family", "cups", "kit", "gift", "morning", "holiday-camera", "stencil-demo", "cinnamon-demo", "holiday-cups"];
 
@@ -465,9 +466,10 @@ export default function Storefront() {
           <GiftPanel bundle={selected}/>
           <p className="stencil-inclusion"><Check size={15} aria-hidden="true"/> <strong>12 reusable stencil cards included</strong></p>
           <button className="cta main-buy" ref={addButton} onClick={addToBag} disabled={!buyable}>
-            <span>{added ? "Added to Bag" : buyable ? "Add to Cart" : "Unavailable"}</span>{total !== null && <span>{money(total, false, currency)}</span>}{added ? <Check size={20}/> : <ArrowRight size={20}/>}
+            <span className="main-buy-line">{added ? "Added to Bag" : buyable ? <>Add to cart — {total !== null && <span>{money(total, false, currency)}</span>}</> : "Unavailable"}{added && <Check size={18}/>}</span>
+            <span className="main-buy-guarantee"><ShieldCheck size={13}/> 30-Day Money-Back Guarantee</span>
           </button>
-          <NextDispatch/>
+          <BuyAssurance country={country}/>
           <ReviewCard review={reviews[0]} featured/>
           <a className="policy-link" href="#details">See shipping &amp; returns <ArrowDown size={13}/></a>
           <div className="disclosures product-disclosures" id="details">{info.map(([title, description]) => <Disclosure key={title} title={title}>{description}</Disclosure>)}</div>
