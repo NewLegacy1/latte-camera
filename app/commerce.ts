@@ -137,6 +137,14 @@ type ShopifyCart = {
   cost: { subtotalAmount: Money };
 };
 
+/** The click id inside a _fbc cookie value (`fb.1.<timestamp>.<fbclid>`). */
+function fbclidFromFbc() {
+  const encoded = document.cookie.split("; ").find(part => part.startsWith("_fbc="))?.slice(5);
+  if (!encoded) return "";
+  const parts = decodeURIComponent(encoded).split(".");
+  return parts.length >= 3 ? parts.slice(2).join(".") : "";
+}
+
 export async function goToCheckout(items: CartItem[], market: Market) {
   const quantities = new Map<string, number>();
   for (const item of items) {
@@ -183,6 +191,18 @@ export async function goToCheckout(items: CartItem[], market: Market) {
   const url = new URL(cart.checkoutUrl);
   if (url.protocol !== "https:" || url.username || url.password) {
     throw new Error("Checkout returned an unexpected address.");
+  }
+  // Carry the Meta click id (and UTMs) to the Shopify checkout. Without the
+  // fbclid the checkout pixel never sets _fbc and the Purchase can't be
+  // attributed to the ad that drove it.
+  const live = new URLSearchParams(window.location.search);
+  if (!url.searchParams.get("fbclid")) {
+    const fbclid = live.get("fbclid") || fbclidFromFbc();
+    if (fbclid) url.searchParams.set("fbclid", fbclid);
+  }
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    const value = live.get(key);
+    if (value && !url.searchParams.get(key)) url.searchParams.set(key, value);
   }
   window.location.assign(url.href);
 }
